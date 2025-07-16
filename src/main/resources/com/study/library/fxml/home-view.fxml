@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.*?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.study.library.controller.HomeController"
+            stylesheets="@css/home.css"
+            prefWidth="1200" prefHeight="1000">
+    <VBox spacing="20" AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+        <!-- HEADER -->
+        <HBox alignment="CENTER_LEFT" spacing="15">
+            <FontIcon iconLiteral="fas-home" iconSize="32" iconColor="#3498db"/>
+            <VBox spacing="5">
+                <Label text="TRANG CHỦ" styleClass="page-title"/>
+                <Label fx:id="lblCurrentTime" text="Thứ Hai, 01/01/2024 - 10:30:00" styleClass="subtitle"/>
+            </VBox>
+        </HBox>
+
+        <!-- WELCOME MESSAGE -->
+        <HBox styleClass="welcome-card" alignment="CENTER_LEFT" spacing="20" HBox.hgrow="ALWAYS">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            <FontIcon iconLiteral="fas-book-open" iconSize="48" iconColor="#2ecc71"/>
+            <VBox spacing="8" HBox.hgrow="ALWAYS">
+                <Label text="Chào mừng bạn đến với Hệ thống Quản lý Thư viện!" styleClass="welcome-title"/>
+                <Label text="Quản lý sách, người mượn và theo dõi tình trạng mượn trả một cách hiệu quả"
+                       styleClass="welcome-subtitle"/>
+            </VBox>
+        </HBox>
+
+        <VBox spacing="20" layoutY="100">
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <FontIcon iconLiteral="fas-chart-line" iconSize="24" iconColor="#e74c3c"/>
+                <Label text="THỐNG KÊ TỔNG QUAN" styleClass="section-title"/>
+            </HBox>
+
+            <GridPane hgap="20" vgap="20">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="ALWAYS" percentWidth="25"/>
+                    <ColumnConstraints hgrow="ALWAYS" percentWidth="25"/>
+                    <ColumnConstraints hgrow="ALWAYS" percentWidth="25"/>
+                    <ColumnConstraints hgrow="ALWAYS" percentWidth="25"/>
+                </columnConstraints>
+
+                <!-- TỔNG SỐ SÁCH -->
+                <VBox GridPane.columnIndex="0" styleClass="stat-card, stat-card-blue" alignment="CENTER" spacing="8">
+                    <FontIcon iconLiteral="fas-book" iconSize="36" iconColor="white"/>
+                    <Label fx:id="lblTotalBooks" text="0" styleClass="stat-number"/>
+                    <Label text="Tổng số sách" styleClass="stat-label"/>
+                </VBox>
+
+                <!-- SÁCH ĐANG MƯỢN -->
+                <VBox GridPane.columnIndex="1" styleClass="stat-card, stat-card-orange" alignment="CENTER" spacing="8">
+                    <FontIcon iconLiteral="fas-hand-holding" iconSize="36" iconColor="white"/>
+                    <Label fx:id="lblBorrowedBooks" text="0" styleClass="stat-number"/>
+                    <Label text="Sách đang mượn" styleClass="stat-label"/>
+                </VBox>
+
+                <!-- NGƯỜI MƯỢN -->
+                <VBox GridPane.columnIndex="2" styleClass="stat-card, stat-card-green" alignment="CENTER" spacing="8">
+                    <FontIcon iconLiteral="fas-users" iconSize="36" iconColor="white"/>
+                    <Label fx:id="lblTotalUsers" text="0" styleClass="stat-number"/>
+                    <Label text="Người mượn" styleClass="stat-label"/>
+                </VBox>
+
+                <!-- SÁCH QUÁ HẠN -->
+                <VBox GridPane.columnIndex="3" styleClass="stat-card, stat-card-red" alignment="CENTER" spacing="8">
+                    <FontIcon iconLiteral="fas-exclamation-triangle" iconSize="36" iconColor="white"/>
+                    <Label fx:id="lblOverdueBooks" text="0" styleClass="stat-number"/>
+                    <Label text="Sách quá hạn" styleClass="stat-label"/>
+                </VBox>
+            </GridPane>
+        </VBox>
+
+        <!-- RECENT ACTIVITIES -->
+        <VBox spacing="20" layoutY="300">
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <FontIcon iconLiteral="fas-clock" iconSize="24" iconColor="#9b59b6"/>
+                <Label text="HOẠT ĐỘNG GẦN ĐÂY" styleClass="section-title"/>
+            </HBox>
+
+            <HBox spacing="20">
+                <!-- SÁCH MỚI THÊM -->
+                <VBox spacing="10" styleClass="activity-card" HBox.hgrow="ALWAYS">
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <FontIcon iconLiteral="fas-plus-circle" iconSize="20" iconColor="#27ae60"/>
+                        <Label text="Sách mới thêm" styleClass="activity-title"/>
+                    </HBox>
+                    <ListView fx:id="listRecentBooks" prefHeight="120" styleClass="activity-list"/>
+                </VBox>
+
+                <!-- MƯỢN SÁCH GẦN ĐÂY -->
+                <VBox spacing="10" styleClass="activity-card" HBox.hgrow="ALWAYS">
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <FontIcon iconLiteral="fas-arrow-right" iconSize="20" iconColor="#e67e22"/>
+                        <Label text="Mượn sách gần đây" styleClass="activity-title"/>
+                    </HBox>
+                    <ListView fx:id="listRecentLoans" prefHeight="120" styleClass="activity-list"/>
+                </VBox>
+            </HBox>
+        </VBox>
+    </VBox>
+
+
+
+</AnchorPane>

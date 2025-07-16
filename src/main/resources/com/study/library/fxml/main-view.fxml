@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import org.kordamp.ikonli.javafx.*?>
+<BorderPane fx:controller="com.study.library.controller.MainController"
+            xmlns:fx="http://javafx.com/fxml" prefWidth="1200" prefHeight="1000"
+            stylesheets="@css/style.css">
+
+    <!-- MENU TRÁI (SIDEBAR) -->
+    <left>
+        <VBox spacing="10" styleClass="sidebar" prefWidth="200" alignment="TOP_LEFT">
+            <children>
+                <Button fx:id="btnHome" text="Trang chủ" maxWidth="Infinity" graphicTextGap="10"
+                        styleClass="sidebar-button" onAction="#showHome">
+                    <graphic>
+                        <FontIcon iconLiteral="fas-home" iconSize="18" iconColor="white"/>
+                    </graphic>
+                </Button>
+
+                <Button fx:id="btnBooks" text="Sách" maxWidth="Infinity" graphicTextGap="10"
+                        styleClass="sidebar-button" onAction="#showBooks">
+                    <graphic>
+                        <FontIcon iconLiteral="fas-book" iconSize="18" iconColor="white"/>
+                    </graphic>
+                </Button>
+
+                <Button fx:id="btnUsers" text="Người mượn" maxWidth="Infinity" graphicTextGap="10"
+                        styleClass="sidebar-button" onAction="#showBorrowers">
+                    <graphic>
+                        <FontIcon iconLiteral="fas-user" iconSize="18" iconColor="white"/>
+                    </graphic>
+                </Button>
+
+                <Button fx:id="btnBorrow" text="Mượn / Trả" maxWidth="Infinity" graphicTextGap="10"
+                        styleClass="sidebar-button" onAction="#showLoanReturn">
+                    <graphic>
+                        <FontIcon iconLiteral="fas-exchange-alt" iconSize="18" iconColor="white"/>
+                    </graphic>
+                </Button>
+
+                <Button fx:id="btnStats" text="Thống kê" maxWidth="Infinity" graphicTextGap="10"
+                        styleClass="sidebar-button" onAction="#showStatistics">
+                    <graphic>
+                        <FontIcon iconLiteral="fas-chart-bar" iconSize="18" iconColor="white"/>
+                    </graphic>
+                </Button>
+            </children>
+            <padding>
+                <Insets top="20" left="10" right="10"/>
+            </padding>
+        </VBox>
+    </left>
+
+    <!-- NỘI DUNG CHÍNH -->
+    <center>
+        <StackPane fx:id="contentArea" styleClass="content-area"/>
+    </center>
+
+</BorderPane>
