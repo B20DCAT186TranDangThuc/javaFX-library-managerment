@@ -1,34 +1,131 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml"
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.study.library.controller.BookController"
             stylesheets="@css/book.css"
-            prefWidth="1200" prefHeight="1000">
-    <VBox spacing="20" AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
-        <!-- HEADER -->
+            prefWidth="1400" prefHeight="900"
+            styleClass="main-container">
+
+    <!-- TOP: HEADER -->
+    <top>
         <fx:include source="header-view.fxml" fx:id="headerPane"/>
+    </top>
 
-        <!-- THÔNG TIN SÁCH -->
-        <VBox spacing="10">
-            <HBox spacing="10" alignment="CENTER_LEFT">
-                <Label text="Tìm kiếm:"/>
-                <TextField fx:id="searchField" promptText="Nhập tên sách hoặc tác giả"/>
-                <Button fx:id="btnSearch" text="Tìm kiếm" />
-            </HBox>
+    <!-- CENTER: MAIN CONTENT -->
+    <center>
+        <VBox spacing="25" styleClass="content-container">
+            <padding>
+                <Insets top="30" right="30" bottom="30" left="30"/>
+            </padding>
+            <!-- SEARCH AND FILTER SECTION -->
+            <VBox spacing="15" styleClass="search-section">
+                <HBox spacing="15" alignment="CENTER_LEFT">
+                    <VBox spacing="5">
+                        <Label text="Tìm kiếm" styleClass="input-label"/>
+                        <TextField fx:id="searchField"
+                                   promptText="Nhập tên sách, tác giả hoặc nhà xuất bản..."
+                                   styleClass="search-field"
+                                   prefWidth="350"/>
+                    </VBox>
 
-            <ListView fx:id="listBooks" prefHeight="400" styleClass="book-list"/>
+                    <VBox spacing="5" prefWidth="200" maxWidth="200">
+                        <Label text="Lọc theo" styleClass="input-label"/>
+                        <ComboBox fx:id="filterComboBox"
+                                  styleClass="filter-combo"
+                                  prefWidth="200"
+                                  maxWidth="200">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="Tất cả"/>
+                                    <String fx:value="Tên sách"/>
+                                    <String fx:value="Tác giả"/>
+                                    <String fx:value="Nhà xuất bản"/>
+                                    <String fx:value="Năm xuất bản"/>
+                                </FXCollections>
+                            </items>
+                        </ComboBox>
+                    </VBox>
+
+                    <Button fx:id="btnSearch"
+                            text="Tìm kiếm"
+                            styleClass="search-button">
+                        <graphic>
+                            <FontIcon iconLiteral="fas-search" iconSize="14" iconColor="white"/>
+                        </graphic>
+                    </Button>
+
+                    <Button fx:id="btnReset"
+                            text="Đặt lại"
+                            styleClass="reset-button">
+                        <graphic>
+                            <FontIcon iconLiteral="fas-undo" iconSize="14" iconColor="white"/>
+                        </graphic>
+                    </Button>
+                </HBox>
+            </VBox>
+
+            <!-- BOOK LIST SECTION -->
+            <VBox spacing="15" styleClass="list-section" VBox.vgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT">
+                    <Label text="Danh sách sách" styleClass="section-title"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="totalBooksLabel" text="Tổng: 0 sách" styleClass="total-books"/>
+                </HBox>
+
+                <!-- TABLE VIEW -->
+                <TableView fx:id="bookTable" styleClass="book-table" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="idColumn" text="ID" styleClass="table-column" prefWidth="60"/>
+                        <TableColumn fx:id="titleColumn" text="Tên sách" styleClass="table-column" prefWidth="200"/>
+                        <TableColumn fx:id="yearColumn" text="Năm XB" styleClass="table-column" prefWidth="120"/>
+                        <TableColumn fx:id="availableQuantityColumn" text="Còn lại" styleClass="table-column"
+                                     prefWidth="120"/>
+                        <TableColumn fx:id="statusColumn" text="Trạng thái" styleClass="table-column" prefWidth="100"/>
+                        <TableColumn fx:id="actionColumn" text="Hành động" styleClass="table-column" prefWidth="140"/>
+                    </columns>
+
+                    <placeholder>
+                        <VBox alignment="CENTER" spacing="10" styleClass="empty-placeholder">
+                            <FontIcon iconLiteral="fas-book" iconSize="48" iconColor="#6c757d"/>
+                            <Label text="Chưa có sách nào" styleClass="empty-text"/>
+                            <Label text="Nhấn 'Thêm sách' để bắt đầu" styleClass="empty-subtext"/>
+                        </VBox>
+                    </placeholder>
+                </TableView>
+            </VBox>
         </VBox>
+    </center>
 
-        <!-- NÚT THAO TÁC -->
-        <HBox spacing="10" alignment="CENTER_RIGHT">
-            <Button fx:id="btnAdd" text="Thêm Sách" />
-            <Button fx:id="btnEdit" text="Chỉnh Sửa" />
-            <Button fx:id="btnDelete" text="Xóa Sách" />
+    <!-- BOTTOM: ACTION BUTTONS -->
+    <bottom>
+        <HBox spacing="15" alignment="CENTER_RIGHT" styleClass="action-bar">
+            <padding>
+                <Insets top="20" right="30" bottom="20" left="30"/>
+            </padding>
+
+            <Button fx:id="btnAdd"
+                    text="Thêm Sách"
+                    styleClass="add-button">
+                <graphic>
+                    <FontIcon iconLiteral="fas-plus" iconSize="14" iconColor="white"/>
+                </graphic>
+            </Button>
+
+            <Button fx:id="btnExport"
+                    text="Xuất Excel"
+                    styleClass="export-button">
+                <graphic>
+                    <FontIcon iconLiteral="fas-file-excel" iconSize="14" iconColor="white"/>
+                </graphic>
+            </Button>
         </HBox>
-    </VBox>
-</AnchorPane>
+    </bottom>
+</BorderPane>

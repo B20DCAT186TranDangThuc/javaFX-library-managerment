@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.*?>
+<?import java.lang.*?>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.study.library.controller.BookDialogController"
+            stylesheets="@css/dialog-book.css"
+            prefWidth="600" prefHeight="700"
+            styleClass="dialog-container">
+
+    <!-- HEADER -->
+    <top>
+        <VBox styleClass="dialog-header">
+            <HBox alignment="CENTER_LEFT" spacing="15">
+                <padding>
+                    <Insets top="25" right="25" bottom="20" left="25"/>
+                </padding>
+
+                <FontIcon fx:id="headerIcon" iconLiteral="fas-book" iconSize="24" iconColor="#007bff"/>
+                <Label fx:id="headerTitle" text="Thêm Sách Mới" styleClass="dialog-title"/>
+
+                <Region HBox.hgrow="ALWAYS"/>
+            </HBox>
+
+            <Separator styleClass="header-separator"/>
+        </VBox>
+    </top>
+
+    <!-- CONTENT -->
+    <center>
+        <ScrollPane styleClass="content-scroll" fitToWidth="true">
+            <VBox spacing="25" styleClass="form-container">
+                <padding>
+                    <Insets top="25" right="25" bottom="25" left="25"/>
+                </padding>
+
+                <!-- THÔNG TIN CƠ BẢN -->
+                <VBox spacing="15" styleClass="form-section">
+                    <Label text="Thông tin cơ bản" styleClass="section-title"/>
+
+                    <GridPane hgap="20" vgap="15" styleClass="form-grid">
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="30"/>
+                            <ColumnConstraints percentWidth="70"/>
+                        </columnConstraints>
+
+                        <!-- ID (chỉ hiển thị khi edit) -->
+                        <Label text="ID:" styleClass="field-label" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <TextField fx:id="txtId" editable="false" styleClass="id-field"
+                                   GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                        <!-- Tên sách -->
+                        <Label text="Tên sách:" styleClass="field-label, required" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                        <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <TextField fx:id="txtTitle" promptText="Nhập tên sách..." styleClass="input-field"/>
+                            <Label fx:id="lblTitleError" styleClass="error-label" visible="false"/>
+                        </VBox>
+
+                        <!-- Tác giả -->
+                        <Label text="Tác giả:" styleClass="field-label, required" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                        <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <ComboBox fx:id="cmbAuthor" editable="true" promptText="Chọn hoặc nhập tác giả..."
+                                          styleClass="author-combo" HBox.hgrow="ALWAYS"/>
+                                <Button fx:id="btnAddAuthor" styleClass="mini-button">
+                                    <tooltip>
+                                        <Tooltip text="Thêm tác giả mới"/>
+                                    </tooltip>
+                                    <graphic>
+                                        <FontIcon iconLiteral="fas-user-plus" iconSize="12" iconColor="#007bff"/>
+                                    </graphic>
+                                </Button>
+                            </HBox>
+                            <Label fx:id="lblAuthorError" styleClass="error-label" visible="false"/>
+                        </VBox>
+
+                        <!-- Nhà xuất bản -->
+                        <Label text="Nhà xuất bản:" styleClass="field-label, required" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                        <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                            <TextField fx:id="txtPublisher" promptText="Nhập nhà xuất bản..." styleClass="input-field"/>
+                            <Label fx:id="lblPublisherError" styleClass="error-label" visible="false"/>
+                        </VBox>
+
+                        <!-- Năm xuất bản -->
+                        <Label text="Năm xuất bản:" styleClass="field-label, required" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+                        <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Spinner fx:id="spnYear" editable="true" styleClass="year-spinner" prefWidth="120"/>
+                                <Label text="(Từ 1900 đến năm hiện tại)" styleClass="hint-label"/>
+                            </HBox>
+                            <Label fx:id="lblYearError" styleClass="error-label" visible="false"/>
+                        </VBox>
+                    </GridPane>
+                </VBox>
+
+                <!-- THÔNG TIN SỐ LƯỢNG -->
+                <VBox spacing="15" styleClass="form-section">
+                    <Label text="Thông tin số lượng" styleClass="section-title"/>
+
+                    <GridPane hgap="20" vgap="15" styleClass="form-grid">
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="30"/>
+                            <ColumnConstraints percentWidth="70"/>
+                        </columnConstraints>
+
+                        <!-- Tổng số lượng -->
+                        <Label text="Tổng số lượng:" styleClass="field-label, required" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Spinner fx:id="spnTotalQuantity" editable="true" styleClass="quantity-spinner" prefWidth="120"/>
+                                <Label text="cuốn" styleClass="unit-label"/>
+                            </HBox>
+                            <Label fx:id="lblTotalQuantityError" styleClass="error-label" visible="false"/>
+                        </VBox>
+
+                        <!-- Số lượng có sẵn -->
+                        <Label text="Số lượng có sẵn:" styleClass="field-label, required" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                        <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Spinner fx:id="spnAvailableQuantity" editable="true" styleClass="quantity-spinner" prefWidth="120"/>
+                                <Label text="cuốn" styleClass="unit-label"/>
+                                <CheckBox fx:id="chkSameAsTotal" text="Bằng tổng số lượng" styleClass="same-quantity-check"/>
+                            </HBox>
+                            <Label fx:id="lblAvailableQuantityError" styleClass="error-label" visible="false"/>
+                        </VBox>
+                    </GridPane>
+                </VBox>
+
+                <!-- THÔNG TIN THÊM -->
+                <VBox spacing="15" styleClass="form-section">
+                    <Label text="Thông tin thêm (tùy chọn)" styleClass="section-title"/>
+
+                    <GridPane hgap="20" vgap="15" styleClass="form-grid">
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="30"/>
+                            <ColumnConstraints percentWidth="70"/>
+                        </columnConstraints>
+
+                        <!-- Mô tả -->
+                        <Label text="Mô tả:" styleClass="field-label" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <TextArea fx:id="txtDescription" promptText="Nhập mô tả về sách..."
+                                  styleClass="description-area" prefRowCount="3"
+                                  GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                        <!-- Thể loại -->
+                        <Label text="Thể loại:" styleClass="field-label" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                        <ComboBox fx:id="cmbCategory" editable="true" promptText="Chọn thể loại..."
+                                  styleClass="category-combo" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="Văn học"/>
+                                    <String fx:value="Khoa học"/>
+                                    <String fx:value="Lịch sử"/>
+                                    <String fx:value="Triết học"/>
+                                    <String fx:value="Kinh tế"/>
+                                    <String fx:value="Công nghệ"/>
+                                    <String fx:value="Y học"/>
+                                    <String fx:value="Nghệ thuật"/>
+                                    <String fx:value="Tâm lý học"/>
+                                    <String fx:value="Khác"/>
+                                </FXCollections>
+                            </items>
+                        </ComboBox>
+
+                        <!-- Vị trí -->
+                        <Label text="Vị trí:" styleClass="field-label" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                        <TextField fx:id="txtLocation" promptText="Ví dụ: Tầng 2, Kệ A, Ngăn 3"
+                                   styleClass="input-field" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                    </GridPane>
+                </VBox>
+            </VBox>
+        </ScrollPane>
+    </center>
+
+    <!-- FOOTER BUTTONS -->
+    <bottom>
+        <HBox spacing="15" alignment="CENTER_RIGHT" styleClass="dialog-footer">
+            <padding>
+                <Insets top="20" right="25" bottom="25" left="25"/>
+            </padding>
+
+            <Button fx:id="btnCancel" text="Hủy bỏ" styleClass="cancel-button">
+                <graphic>
+                    <FontIcon iconLiteral="fas-times" iconSize="14" iconColor="#6c757d"/>
+                </graphic>
+            </Button>
+
+            <Button fx:id="btnSave" text="Lưu" styleClass="save-button">
+                <graphic>
+                    <FontIcon iconLiteral="fas-save" iconSize="14" iconColor="white"/>
+                </graphic>
+            </Button>
+        </HBox>
+    </bottom>
+</BorderPane>
