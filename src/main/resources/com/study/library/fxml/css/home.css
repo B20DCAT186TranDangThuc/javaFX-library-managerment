@@ -6,24 +6,6 @@
     -fx-padding: 0;
 }
 
-/* Page Title */
-.page-title {
-    -fx-text-fill: #2c3e50;
-    -fx-font-weight: bold;
-    -fx-font-size: 28px;
-}
-
-.subtitle {
-    -fx-text-fill: #7f8c8d;
-    -fx-font-size: 14px;
-}
-
-.section-title {
-    -fx-text-fill: #34495e;
-    -fx-font-weight: bold;
-    -fx-font-size: 18px;
-}
-
 /* Welcome Card */
 .welcome-card {
     -fx-background-color: linear-gradient(to right, #667eea, #764ba2);

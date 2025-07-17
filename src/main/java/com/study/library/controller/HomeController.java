@@ -1,22 +1,16 @@
 package com.study.library.controller;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class HomeController implements Initializable {
 
-    @FXML
-    private Label lblCurrentTime;
     @FXML private Label lblTotalBooks;
     @FXML private Label lblBorrowedBooks;
     @FXML private Label lblTotalUsers;
@@ -24,30 +18,18 @@ public class HomeController implements Initializable {
     @FXML private ListView<String> listRecentBooks;
     @FXML private ListView<String> listRecentLoans;
 
-    private Timer timeTimer;
+    @FXML private AnchorPane headerPane;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        startClock();
+        // Lấy HeaderController
+        HeaderController headerController = (HeaderController) headerPane.getUserData();
+        headerController.setPageTitle("TRANG CHỦ");
+        headerController.setIcon("fas-home");
+        headerController.setIconColor("#3498db");
         loadStatistics();
         loadRecentActivities();
-    }
-
-    /**
-     * Bắt đầu đồng hồ thời gian thực
-     */
-    private void startClock() {
-        timeTimer = new Timer();
-        timeTimer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                Platform.runLater(() -> {
-                    LocalDateTime now = LocalDateTime.now();
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, dd/MM/yyyy - HH:mm:ss");
-                    lblCurrentTime.setText(now.format(formatter));
-                });
-            }
-        }, 0, 1000); // Cập nhật mỗi giây
     }
 
     /**
