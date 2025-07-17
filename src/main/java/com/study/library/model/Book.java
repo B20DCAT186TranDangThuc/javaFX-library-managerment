@@ -18,5 +18,7 @@ public class Book {
     private int yearPublished;
     private int totalQuantity;
     private int availableQuantity;
+    private String description;
+    private String location;
 
 }

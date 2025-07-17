@@ -74,18 +74,22 @@ public class BookController implements Initializable {
     }
 
     private void setupButtonEvents() {
-        btnAdd.setOnAction(e -> showAddBookDialog());
+        btnAdd.setOnAction(e -> showBookDialog(null));
     }
 
-    private void showAddBookDialog() {
+    private void showBookDialog(Book bookToEdit) {
         try {
             // Load FXML
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/study/library/fxml/book-dialog.fxml"));
             Parent root = loader.load();
 
-            // Create stage
+            // Lấy controller
+            BookDialogController controller = loader.getController();
+            controller.setEditMode(bookToEdit);
+
+            // Tạo Stage
             Stage dialogStage = new Stage();
-            dialogStage.setTitle("Thêm Sách Mới");
+            dialogStage.setTitle(bookToEdit == null ? "Thêm Sách Mới" : "Chỉnh Sửa Sách");
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.initOwner(btnAdd.getScene().getWindow());
 
@@ -93,19 +97,24 @@ public class BookController implements Initializable {
             Scene scene = new Scene(root);
             dialogStage.setScene(scene);
 
-            // Configure dialog
+            // Truyền stage vào controller nếu cần controller tự close dialog
+            controller.setDialogStage(dialogStage);
+
+            // Cấu hình khác
             dialogStage.setResizable(false);
             dialogStage.centerOnScreen();
 
-            // Show dialog
+            // Hiển thị dialog
             dialogStage.showAndWait();
 
-            // Refresh table after dialog closes
-            // refreshBookList();
+            // Nếu người dùng đã lưu, cập nhật lại bảng
+            if (controller.isSaved()) {
+                loadBookData();
+            }
 
         } catch (IOException ex) {
             ex.printStackTrace();
-            showAlert("Lỗi", "Không thể mở dialog thêm sách: " + ex.getMessage());
+            showAlert("Lỗi", "Không thể mở dialog sách: " + ex.getMessage());
         }
     }
 
@@ -196,7 +205,7 @@ public class BookController implements Initializable {
                 // Xử lý sự kiện
                 editBtn.setOnAction(e -> {
                     Book bookModel = getTableView().getItems().get(getIndex());
-
+                    showBookDialog(bookModel);
                 });
 
                 deleteBtn.setOnAction(e -> {

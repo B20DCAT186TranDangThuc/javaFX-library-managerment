@@ -64,7 +64,7 @@
                         <Label text="Tác giả:" styleClass="field-label, required" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
                         <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="2">
                             <HBox spacing="10" alignment="CENTER_LEFT">
-                                <ComboBox fx:id="cmbAuthor" editable="true" promptText="Chọn hoặc nhập tác giả..."
+                                <ComboBox fx:id="cmbAuthor" promptText="Chọn tác giả..."
                                           styleClass="author-combo" HBox.hgrow="ALWAYS"/>
                                 <Button fx:id="btnAddAuthor" styleClass="mini-button">
                                     <tooltip>
@@ -148,7 +148,7 @@
 
                         <!-- Thể loại -->
                         <Label text="Thể loại:" styleClass="field-label" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                        <ComboBox fx:id="cmbCategory" editable="true" promptText="Chọn thể loại..."
+                        <ComboBox fx:id="cmbCategory" promptText="Chọn thể loại..."
                                   styleClass="category-combo" GridPane.columnIndex="1" GridPane.rowIndex="1">
                         </ComboBox>
 
@@ -169,13 +169,13 @@
                 <Insets top="20" right="25" bottom="25" left="25"/>
             </padding>
 
-            <Button fx:id="btnCancel" text="Hủy bỏ" styleClass="cancel-button">
+            <Button fx:id="btnCancel" text="Hủy bỏ" styleClass="cancel-button" onAction="#onCancelClicked">
                 <graphic>
                     <FontIcon iconLiteral="fas-times" iconSize="14" iconColor="#6c757d"/>
                 </graphic>
             </Button>
 
-            <Button fx:id="btnSave" text="Lưu" styleClass="save-button">
+            <Button fx:id="btnSave" text="Lưu" styleClass="save-button" onAction="#onSaveClicked">
                 <graphic>
                     <FontIcon iconLiteral="fas-save" iconSize="14" iconColor="white"/>
                 </graphic>
