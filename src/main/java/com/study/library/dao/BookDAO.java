@@ -87,52 +87,66 @@ public class BookDAO {
     }
 
     // Xóa sách
-    public void deleteBook(int id) throws SQLException {
-
+    public boolean deleteBook(int id) throws SQLException {
+        String sql = "DELETE FROM books WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     // Tìm tất cả sách
-    public List<Book> getAllBooks() {
+    public List<Book> getAllBooks(String data) {
         List<Book> books = new ArrayList<>();
-        String sql = "SELECT b.*, a.id AS author_id, a.name AS author_name, " +
-                     "c.id AS category_id, c.name AS category_name " +
-                     "FROM books b " +
-                     "LEFT JOIN authors a ON b.author_id = a.id " +
-                     "LEFT JOIN categories c ON b.category_id = c.id";
+        StringBuilder sql = new StringBuilder(
+                "SELECT b.*, a.id AS author_id, a.name AS author_name, " +
+                "c.id AS category_id, c.name AS category_name " +
+                "FROM books b " +
+                "LEFT JOIN authors a ON b.author_id = a.id " +
+                "LEFT JOIN categories c ON b.category_id = c.id "
+        );
 
-        try (Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+        boolean hasFilter = data != null && !data.trim().isEmpty();
+        if (hasFilter) {
+            sql.append("WHERE b.title LIKE ? OR a.name LIKE ? OR c.name LIKE ?");
+        }
 
-            while (rs.next()) {
-                // Author
-                Author author = null;
-                int authorId = rs.getInt("author_id");
-                if (!rs.wasNull()) {
-                    author = new Author(authorId, rs.getString("author_name"));
+        try (PreparedStatement stmt = connection.prepareStatement(sql.toString())) {
+            if (hasFilter) {
+                String keyword = "%" + data.trim() + "%";
+                stmt.setString(1, keyword);
+                stmt.setString(2, keyword);
+                stmt.setString(3, keyword);
+            }
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Author author = new Author(
+                            rs.getInt("author_id"),
+                            rs.getString("author_name")
+                    );
+                    Category category = new Category(
+                            rs.getInt("category_id"),
+                            rs.getString("category_name")
+                    );
+
+                    Book book = new Book();
+                    book.setId(rs.getInt("id"));
+                    book.setTitle(rs.getString("title"));
+                    book.setAuthor(author);
+                    book.setCategory(category);
+                    book.setPublisher(rs.getString("publisher"));
+                    book.setYearPublished(rs.getInt("year_published"));
+                    book.setTotalQuantity(rs.getInt("total_quantity"));
+                    book.setAvailableQuantity(rs.getInt("available_quantity"));
+                    book.setDescription(rs.getString("description"));
+                    book.setLocation(rs.getString("location"));
+
+                    books.add(book);
                 }
-
-                // Category
-                Category category = null;
-                int categoryId = rs.getInt("category_id");
-                if (!rs.wasNull()) {
-                    category = new Category(categoryId, rs.getString("category_name"));
-                }
-
-                // Book
-                Book book = new Book(
-                        rs.getInt("id"),
-                        rs.getString("title"),
-                        author,
-                        category,
-                        rs.getString("publisher"),
-                        rs.getInt("year_published"),
-                        rs.getInt("total_quantity"),
-                        rs.getInt("available_quantity"),
-                        rs.getString("description"),
-                        rs.getString("location")
-                );
-
-                books.add(book);
             }
 
         } catch (SQLException e) {

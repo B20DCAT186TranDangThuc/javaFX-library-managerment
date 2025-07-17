@@ -26,7 +26,7 @@ create table books
     created_at         datetime default CURRENT_TIMESTAMP null,
     updated_at         datetime default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
     description        varchar(255)                       null,
-    locattion          varchar(255)                       null,
+    location           varchar(255)                       null,
     constraint fk_books_author
         foreign key (author_id) references authors (id)
             on update cascade on delete set null,

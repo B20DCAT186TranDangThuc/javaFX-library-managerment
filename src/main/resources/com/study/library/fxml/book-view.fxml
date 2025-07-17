@@ -56,7 +56,7 @@
 
                     <Button fx:id="btnSearch"
                             text="Tìm kiếm"
-                            styleClass="search-button">
+                            styleClass="search-button" onAction="#searchBook">
                         <graphic>
                             <FontIcon iconLiteral="fas-search" iconSize="14" iconColor="white"/>
                         </graphic>
@@ -64,7 +64,7 @@
 
                     <Button fx:id="btnReset"
                             text="Đặt lại"
-                            styleClass="reset-button">
+                            styleClass="reset-button" onAction="#resetSearch">
                         <graphic>
                             <FontIcon iconLiteral="fas-undo" iconSize="14" iconColor="white"/>
                         </graphic>

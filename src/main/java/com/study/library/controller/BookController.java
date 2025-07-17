@@ -25,6 +25,7 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class BookController implements Initializable {
@@ -47,6 +48,14 @@ public class BookController implements Initializable {
     private TableColumn<Book, Void> actionColumn;
     @FXML
     Label totalBooksLabel;
+    @FXML
+    TextField searchField;
+    @FXML
+    ComboBox<String> filterComboBox;
+    @FXML
+    Button btnSearch;
+    @FXML
+    Button btnReset;
 
     private BookDAO bookDAO;
 
@@ -60,7 +69,7 @@ public class BookController implements Initializable {
         setupButtonEvents();
 
         setupTableColumns();
-        loadBookData();
+        loadBookData(null);
     }
 
     private void connectDao() {
@@ -96,20 +105,15 @@ public class BookController implements Initializable {
             // Set scene
             Scene scene = new Scene(root);
             dialogStage.setScene(scene);
-
-            // Truyền stage vào controller nếu cần controller tự close dialog
             controller.setDialogStage(dialogStage);
-
-            // Cấu hình khác
             dialogStage.setResizable(false);
             dialogStage.centerOnScreen();
 
-            // Hiển thị dialog
             dialogStage.showAndWait();
 
-            // Nếu người dùng đã lưu, cập nhật lại bảng
+            //  cập nhật lại bảng
             if (controller.isSaved()) {
-                loadBookData();
+                loadBookData(null);
             }
 
         } catch (IOException ex) {
@@ -134,11 +138,21 @@ public class BookController implements Initializable {
         headerController.setIconColor("#3498db");
     }
 
-    private void loadBookData() {
-        List<Book> books = bookDAO.getAllBooks();
+    private void loadBookData(String data) {
+        List<Book> books = bookDAO.getAllBooks(data);
         ObservableList<Book> observableBooks = FXCollections.observableArrayList(books);
         bookTable.setItems(observableBooks);
         totalBooksLabel.setText("Tổng: " + books.size() + " sách");
+    }
+
+    public void searchBook() {
+        String data = searchField.getText();
+        loadBookData(data);
+    }
+
+    public void resetSearch() {
+        searchField.clear();
+        filterComboBox.getSelectionModel().clearSelection();
     }
 
     private void setupTableColumns() {
@@ -210,8 +224,34 @@ public class BookController implements Initializable {
 
                 deleteBtn.setOnAction(e -> {
                     Book bookModel = getTableView().getItems().get(getIndex());
-
+                    showDeleteBook(bookModel);
                 });
+            }
+
+            private void showDeleteBook(Book bookModel) {
+                // Xác nhận trước khi xoá
+                Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+                confirm.setTitle("Xác nhận xoá");
+                confirm.setHeaderText("Bạn có chắc muốn xoá sách?");
+                confirm.setContentText("Tiêu đề: " + bookModel.getTitle());
+
+                Optional<ButtonType> result = confirm.showAndWait();
+                if (result.isPresent() && result.get() == ButtonType.OK) {
+                    try {
+                        BookDAO bookDAO = new BookDAO(DatabaseConnection.getConnection());
+                        boolean success = bookDAO.deleteBook(bookModel.getId());
+
+                        if (success) {
+                            loadBookData(null);
+                            showAlert("Thành công", "Đã xoá sách khỏi hệ thống.");
+                        } else {
+                            showAlert("Lỗi", "Không thể xoá sách. Vui lòng thử lại.");
+                        }
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                        showAlert("Lỗi", "Không thể kết nối CSDL: " + ex.getMessage());
+                    }
+                }
             }
 
             @Override

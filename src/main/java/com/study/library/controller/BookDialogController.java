@@ -201,6 +201,7 @@ public class BookDialogController implements Initializable {
     private void onSaveClicked() {
         if (!validateForm()) {
             showAlert("Cảnh báo", "Vui lòng điền đầy đủ thông tin");
+            return;
         };
 
         Book book = isEditMode ? editingBook : new Book();
