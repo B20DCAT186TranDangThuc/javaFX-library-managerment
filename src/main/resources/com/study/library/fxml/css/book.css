@@ -183,6 +183,52 @@
     -fx-text-fill: #2c3e50;
 }
 
+/* Styles cho action buttons */
+.edit-button {
+    -fx-background-color: #007bff;
+    -fx-text-fill: white;
+    -fx-background-radius: 4px;
+    -fx-padding: 6px 8px;
+    -fx-cursor: hand;
+    -fx-font-size: 12px;
+}
+
+.edit-button:hover {
+    -fx-background-color: #0056b3;
+}
+
+.edit-button:pressed {
+    -fx-background-color: #004085;
+}
+
+.delete-button {
+    -fx-background-color: #dc3545;
+    -fx-text-fill: white;
+    -fx-background-radius: 4px;
+    -fx-padding: 6px 8px;
+    -fx-cursor: hand;
+    -fx-font-size: 12px;
+}
+
+.delete-button:hover {
+    -fx-background-color: #c82333;
+}
+
+.delete-button:pressed {
+    -fx-background-color: #bd2130;
+}
+
+/* Style cho status column */
+.status-available {
+    -fx-text-fill: #28a745;
+    -fx-font-weight: bold;
+}
+
+.status-out-of-stock {
+    -fx-text-fill: #dc3545;
+    -fx-font-weight: bold;
+}
+
 /* ===== EMPTY PLACEHOLDER ===== */
 .empty-placeholder {
     -fx-padding: 60px;

@@ -150,20 +150,6 @@
                         <Label text="Thể loại:" styleClass="field-label" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
                         <ComboBox fx:id="cmbCategory" editable="true" promptText="Chọn thể loại..."
                                   styleClass="category-combo" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                            <items>
-                                <FXCollections fx:factory="observableArrayList">
-                                    <String fx:value="Văn học"/>
-                                    <String fx:value="Khoa học"/>
-                                    <String fx:value="Lịch sử"/>
-                                    <String fx:value="Triết học"/>
-                                    <String fx:value="Kinh tế"/>
-                                    <String fx:value="Công nghệ"/>
-                                    <String fx:value="Y học"/>
-                                    <String fx:value="Nghệ thuật"/>
-                                    <String fx:value="Tâm lý học"/>
-                                    <String fx:value="Khác"/>
-                                </FXCollections>
-                            </items>
                         </ComboBox>
 
                         <!-- Vị trí -->
