@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.study.library.controller.UserController"
+            stylesheets="@css/user.css"
+            prefWidth="1400" prefHeight="900"
+            styleClass="main-container">
+
+    <!-- TOP: HEADER -->
+    <top>
+        <fx:include source="header-view.fxml" fx:id="headerPane"/>
+    </top>
+
+    <center>
+        <VBox spacing="20" styleClass="content-container">
+            <padding>
+                <Insets top="30" right="30" bottom="30" left="30"/>
+            </padding>
+
+            <!-- Search and Actions Panel -->
+            <VBox spacing="15" styleClass="search-panel">
+                <HBox spacing="15" alignment="CENTER_LEFT">
+                    <!-- Search Box -->
+                    <HBox spacing="0" styleClass="search-box" HBox.hgrow="ALWAYS" maxWidth="500">
+                        <FontIcon iconLiteral="fas-search" iconSize="16" iconColor="#6c757d" styleClass="search-icon">
+                            <HBox.margin>
+                                <Insets left="15" top="12" bottom="12" right="5"/>
+                            </HBox.margin>
+                        </FontIcon>
+                        <TextField fx:id="txtSearch" promptText="Tìm theo tên, email, số điện thoại..." styleClass="search-input"/>
+                    </HBox>
+
+                    <!-- Action Buttons -->
+                    <HBox spacing="10">
+                        <Button fx:id="btnSearch" styleClass="btn-primary">
+                            <graphic>
+                                <FontIcon iconLiteral="fas-search" iconSize="14" iconColor="white"/>
+                            </graphic>
+                            <text>Tìm kiếm</text>
+                        </Button>
+
+                        <Button fx:id="btnRefresh" styleClass="btn-secondary">
+                            <graphic>
+                                <FontIcon iconLiteral="fas-sync-alt" iconSize="14" iconColor="white"/>
+                            </graphic>
+                            <text>Làm mới</text>
+                        </Button>
+
+                        <Button fx:id="btnAdd" styleClass="btn-success">
+                            <graphic>
+                                <FontIcon iconLiteral="fas-plus" iconSize="14" iconColor="white"/>
+                            </graphic>
+                            <text>Thêm độc giả</text>
+                        </Button>
+                    </HBox>
+                </HBox>
+
+                <!-- Filter Options -->
+                <HBox spacing="15" alignment="CENTER_LEFT">
+                    <Label text="Lọc theo:" styleClass="filter-label"/>
+                    <ComboBox fx:id="cmbStatus" promptText="Trạng thái" styleClass="filter-combo" prefWidth="150"/>
+                    <ComboBox fx:id="cmbGender" promptText="Giới tính" styleClass="filter-combo" prefWidth="150"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="btnExport" styleClass="btn-outline">
+                        <graphic>
+                            <FontIcon iconLiteral="fas-file-export" iconSize="14" iconColor="#6c757d"/>
+                        </graphic>
+                        <text>Xuất Excel</text>
+                    </Button>
+                </HBox>
+            </VBox>
+
+            <!-- Table Container -->
+            <VBox spacing="15" VBox.vgrow="ALWAYS"  styleClass="list-section">
+
+                <HBox  alignment="CENTER_LEFT">
+                    <Label text="Danh sách độc giả" styleClass="section-title"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="totalUserLabel" text="Tổng: 0 độc giả" styleClass="total-books"/>
+                </HBox>
+
+                <TableView fx:id="tableUser" VBox.vgrow="ALWAYS" styleClass="book-table">
+                    <columns>
+                        <TableColumn fx:id="colId" text="ID" prefWidth="100" styleClass="table-column"/>
+                        <TableColumn fx:id="colName" text="Họ và tên" prefWidth="180" styleClass="table-column"/>
+                        <TableColumn fx:id="colGender" text="Giới tính" prefWidth="160" styleClass="table-column"/>
+                        <TableColumn fx:id="colStatus" text="Trạng thái" prefWidth="160" styleClass="table-column"/>
+                        <TableColumn fx:id="colActions" text="Thao tác" prefWidth="160" styleClass="table-column"/>
+                    </columns>
+
+                    <placeholder>
+                        <VBox alignment="CENTER" spacing="20" styleClass="empty-placeholder">
+                            <VBox alignment="CENTER" spacing="10">
+                                <FontIcon iconLiteral="fas-user-friends" iconSize="64" iconColor="#e9ecef"/>
+                                <Label text="Chưa có độc giả nào" styleClass="empty-title"/>
+                                <Label text="Hãy thêm độc giả đầu tiên để bắt đầu quản lý" styleClass="empty-subtitle"/>
+                            </VBox>
+                            <Button fx:id="btnAddFromEmpty" styleClass="btn-success">
+                                <graphic>
+                                    <FontIcon iconLiteral="fas-plus" iconSize="14" iconColor="white"/>
+                                </graphic>
+                                <text>Thêm độc giả đầu tiên</text>
+                            </Button>
+                        </VBox>
+                    </placeholder>
+                </TableView>
+
+                <!-- Table Footer with Pagination -->
+<!--                <HBox alignment="CENTER_LEFT" spacing="15" styleClass="table-footer">-->
+<!--                    <Label fx:id="lblPageInfo" text="Hiển thị 1-10 của 100 kết quả" styleClass="page-info"/>-->
+<!--                    <Region HBox.hgrow="ALWAYS"/>-->
+<!--                    <HBox spacing="5" alignment="CENTER_RIGHT">-->
+<!--                        <Button fx:id="btnFirstPage" styleClass="btn-pagination">-->
+<!--                            <graphic>-->
+<!--                                <FontIcon iconLiteral="fas-angle-double-left" iconSize="12"/>-->
+<!--                            </graphic>-->
+<!--                        </Button>-->
+<!--                        <Button fx:id="btnPrevPage" styleClass="btn-pagination">-->
+<!--                            <graphic>-->
+<!--                                <FontIcon iconLiteral="fas-angle-left" iconSize="12"/>-->
+<!--                            </graphic>-->
+<!--                        </Button>-->
+<!--                        <Label fx:id="lblCurrentPage" text="1" styleClass="current-page"/>-->
+<!--                        <Label text="/" styleClass="page-separator"/>-->
+<!--                        <Label fx:id="lblTotalPages" text="10" styleClass="total-pages"/>-->
+<!--                        <Button fx:id="btnNextPage" styleClass="btn-pagination">-->
+<!--                            <graphic>-->
+<!--                                <FontIcon iconLiteral="fas-angle-right" iconSize="12"/>-->
+<!--                            </graphic>-->
+<!--                        </Button>-->
+<!--                        <Button fx:id="btnLastPage" styleClass="btn-pagination">-->
+<!--                            <graphic>-->
+<!--                                <FontIcon iconLiteral="fas-angle-double-right" iconSize="12"/>-->
+<!--                            </graphic>-->
+<!--                        </Button>-->
+<!--                    </HBox>-->
+<!--                </HBox>-->
+            </VBox>
+        </VBox>
+    </center>
+
+</BorderPane>

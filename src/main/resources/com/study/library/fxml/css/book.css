@@ -273,41 +273,44 @@
 }
 
 .edit-button {
-    -fx-background-color: linear-gradient(to bottom, #ffc107, #e0a800);
-    -fx-text-fill: #212529;
-    -fx-font-weight: 600;
-    -fx-font-size: 14px;
-    -fx-padding: 12px 20px;
-    -fx-border-radius: 8px;
-    -fx-background-radius: 8px;
+    -fx-background-color: #ffc107;
+    -fx-text-fill: #000000;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-padding: 6px 10px;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(255,193,7,0.3), 4, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(255, 193, 7, 0.3), 3, 0, 0, 1);
+    -fx-border-color: #e0a800;
+    -fx-border-width: 1px;
 }
 
 .edit-button:hover {
-    -fx-background-color: linear-gradient(to bottom, #e0a800, #d39e00);
-    -fx-scale-x: 1.05;
-    -fx-scale-y: 1.05;
+    -fx-background-color: #e0a800;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
 }
 
 .delete-button {
-    -fx-background-color: linear-gradient(to bottom, #dc3545, #bd2130);
-    -fx-text-fill: white;
-    -fx-font-weight: 600;
-    -fx-font-size: 14px;
-    -fx-padding: 12px 20px;
-    -fx-border-radius: 8px;
-    -fx-background-radius: 8px;
+    -fx-background-color: #dc3545;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-padding: 6px 10px;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(220,53,69,0.3), 4, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(220, 53, 69, 0.3), 3, 0, 0, 1);
+    -fx-border-color: #bd2130;
+    -fx-border-width: 1px;
 }
 
 .delete-button:hover {
-    -fx-background-color: linear-gradient(to bottom, #bd2130, #a71e2a);
-    -fx-scale-x: 1.05;
-    -fx-scale-y: 1.05;
+    -fx-background-color: #c82333;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
 }
-
 .export-button {
     -fx-background-color: linear-gradient(to bottom, #17a2b8, #138496);
     -fx-text-fill: white;

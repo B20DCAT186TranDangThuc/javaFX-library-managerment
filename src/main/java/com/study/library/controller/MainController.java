@@ -37,7 +37,7 @@ public class MainController {
 
     @FXML
     private void showBorrowers() {
-        setContent("/com/study/library/fxml/borrower-view.fxml");
+        setContent("/com/study/library/fxml/user-view.fxml");
     }
 
     @FXML
