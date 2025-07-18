@@ -149,13 +149,13 @@
                 <Insets top="20" right="25" bottom="25" left="25"/>
             </padding>
 
-            <Button fx:id="btnCancel" text="Hủy bỏ" styleClass="cancel-button">
+            <Button fx:id="btnCancel" text="Hủy bỏ" styleClass="cancel-button" onAction="#onCancelClicked">
                 <graphic>
-                    <FontIcon iconLiteral="fas-times" iconSize="14" iconColor="#6c757d"/>
+                    <FontIcon iconLiteral="fas-times" iconSize="14" iconColor="#6c757d" />
                 </graphic>
             </Button>
 
-            <Button fx:id="btnSave" text="Lưu" styleClass="save-button">
+            <Button fx:id="btnSave" text="Lưu" styleClass="save-button"  onAction="#onSaveClicked">
                 <graphic>
                     <FontIcon iconLiteral="fas-save" iconSize="14" iconColor="white"/>
                 </graphic>

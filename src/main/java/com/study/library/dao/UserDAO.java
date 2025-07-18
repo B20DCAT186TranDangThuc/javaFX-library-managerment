@@ -57,4 +57,33 @@ public class UserDAO {
 
         return users;
     }
+
+    public boolean saveOrUpdate(User user) throws SQLException {
+        String insertSql = "INSERT INTO users (name, email, phone, dob, address, gender, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        String updateSql = "UPDATE users SET name = ?, email = ?, phone = ?, dob = ?, address = ?, gender = ?, status = ? WHERE id = ?";
+
+        try (PreparedStatement stmt = (user.getId() == 0)
+                ? connection.prepareStatement(insertSql)
+                : connection.prepareStatement(updateSql)) {
+
+            // Dùng chung phần binding
+            stmt.setString(1, user.getName());
+            stmt.setString(2, user.getEmail());
+            stmt.setString(3, user.getPhone());
+            stmt.setString(4, user.getDob());
+            stmt.setString(5, user.getAddress());
+            stmt.setString(6, user.getGender());
+            stmt.setString(7, user.getStatus());
+
+            if (user.getId() != 0) {
+                stmt.setInt(8, user.getId()); // chỉ set nếu là update
+            }
+
+            int affectedRows = stmt.executeUpdate();
+            return affectedRows > 0;
+        }
+    }
+
+
 }

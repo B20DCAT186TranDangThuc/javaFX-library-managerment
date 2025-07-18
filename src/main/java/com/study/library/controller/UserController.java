@@ -1,6 +1,5 @@
 package com.study.library.controller;
 
-import com.study.library.dao.BookDAO;
 import com.study.library.dao.UserDAO;
 import com.study.library.database.DatabaseConnection;
 import com.study.library.model.Book;
@@ -13,13 +12,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
+import javafx.stage.Stage;
 import org.kordamp.ikonli.javafx.FontIcon;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -52,11 +54,16 @@ public class UserController implements Initializable {
     private Label totalUserLabel;
     @FXML
     private Button btnAdd;
+    @FXML
+    private TextField txtSearch;
 
     private UserDAO userDao;
 
+    private final  ObservableList<User> observableBooks = FXCollections.observableArrayList();
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        tableUser.setItems(observableBooks);
         connectDao();
         setHeaderPane();
         setComboBoxSelect();
@@ -136,6 +143,7 @@ public class UserController implements Initializable {
                     //TODO: delete user
                 });
             }
+
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
@@ -150,9 +158,10 @@ public class UserController implements Initializable {
 
     private void loadUserData(String data) {
         List<User> users = userDao.getAllUsers(data);
+        observableBooks.clear();
+        observableBooks.addAll(users);
         totalUserLabel.setText("Total users: " + users.size());
-        ObservableList<User> observableBooks = FXCollections.observableArrayList(users);
-        tableUser.setItems(observableBooks);
+
     }
 
     private void showUserDialog(User user) {
@@ -166,25 +175,23 @@ public class UserController implements Initializable {
             controller.setUser(user); // null for create, User object for edit
 
             // Create custom dialog
-            Dialog<User> dialog = new Dialog<>();
-            dialog.setDialogPane(new DialogPane());
-            dialog.getDialogPane().setContent(dialogContent);
-            dialog.getDialogPane().getButtonTypes().clear(); // Remove default buttons
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle(user == null ? "Thêm độc giả" : "Sửa thông tin");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(btnAdd.getScene().getWindow());
 
-            dialog.initModality(Modality.APPLICATION_MODAL);
-            dialog.initOwner(tableUser.getScene().getWindow());
-            dialog.setResizable(true);
+            Scene scene = new Scene(dialogContent);
+            dialogStage.setScene(scene);
+            controller.setDialogStage(dialogStage);
+            dialogStage.setResizable(false);
+            dialogStage.centerOnScreen();
+            // Show dialog
+            dialogStage.showAndWait();
 
-            // Set dialog title based on mode
-            if (user == null) {
-                dialog.setTitle("Thêm Người Dùng Mới");
-            } else {
-                dialog.setTitle("Chỉnh Sửa Người Dùng");
+            if (controller.isSaved()) {
+                loadUserData(null);
             }
 
-
-            // Show dialog
-            dialog.showAndWait();
 
         } catch (IOException e) {
             showErrorAlert("Lỗi", "Không thể tải dialog người dùng: " + e.getMessage());
@@ -206,6 +213,7 @@ public class UserController implements Initializable {
     private void deleteUser(User user) {
 
     }
+
     private void showSuccessAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -220,6 +228,16 @@ public class UserController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    public void search() {
+        String data = txtSearch.getText();
+        loadUserData(data);
+    }
+
+    public void clearSearch() {
+        txtSearch.clear();
+        loadUserData(null);
     }
 
 }

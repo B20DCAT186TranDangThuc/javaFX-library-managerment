@@ -9,6 +9,7 @@
             fx:controller="com.study.library.controller.UserController"
             stylesheets="@css/user.css"
             prefWidth="1400" prefHeight="900"
+            fx:id="rootPane"
             styleClass="main-container">
 
     <!-- TOP: HEADER -->
@@ -37,14 +38,14 @@
 
                     <!-- Action Buttons -->
                     <HBox spacing="10">
-                        <Button fx:id="btnSearch" styleClass="btn-primary">
+                        <Button fx:id="btnSearch" styleClass="btn-primary" onAction="#search">
                             <graphic>
                                 <FontIcon iconLiteral="fas-search" iconSize="14" iconColor="white"/>
                             </graphic>
                             <text>Tìm kiếm</text>
                         </Button>
 
-                        <Button fx:id="btnRefresh" styleClass="btn-secondary">
+                        <Button fx:id="btnRefresh" styleClass="btn-secondary" onAction="#clearSearch">
                             <graphic>
                                 <FontIcon iconLiteral="fas-sync-alt" iconSize="14" iconColor="white"/>
                             </graphic>

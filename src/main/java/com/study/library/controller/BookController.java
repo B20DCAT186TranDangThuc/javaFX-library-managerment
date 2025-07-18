@@ -62,8 +62,11 @@ public class BookController implements Initializable {
     @FXML
     private Button btnAdd;
 
+    private final ObservableList<Book> observableBooks = FXCollections.observableArrayList();
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        bookTable.setItems(observableBooks);
         connectDao();
         setHeaderPane();
         setupButtonEvents();
@@ -140,8 +143,8 @@ public class BookController implements Initializable {
 
     private void loadBookData(String data) {
         List<Book> books = bookDAO.getAllBooks(data);
-        ObservableList<Book> observableBooks = FXCollections.observableArrayList(books);
-        bookTable.setItems(observableBooks);
+        observableBooks.clear();                 // clear danh sách cũ
+        observableBooks.addAll(books);           // thêm danh sách mới
         totalBooksLabel.setText("Tổng: " + books.size() + " sách");
     }
 
@@ -153,6 +156,7 @@ public class BookController implements Initializable {
     public void resetSearch() {
         searchField.clear();
         filterComboBox.getSelectionModel().clearSelection();
+        loadBookData(null);
     }
 
     private void setupTableColumns() {

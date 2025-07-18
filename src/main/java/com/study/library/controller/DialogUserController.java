@@ -1,15 +1,22 @@
 package com.study.library.controller;
 
+import com.study.library.dao.UserDAO;
+import com.study.library.database.DatabaseConnection;
 import com.study.library.model.User;
 import com.study.library.util.Gender;
 import com.study.library.util.Status;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
@@ -38,15 +45,31 @@ public class DialogUserController implements Initializable {
     @FXML
     private ButtonType saveButtonType;
 
+    @Setter
+    private Stage dialogStage;
     private User currentUser;
     @Getter
     private boolean isEditMode = false;
+    @Getter
+    private boolean saved = false;
+    private UserDAO userDao;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        connectDao();
         setComboBoxSelect();
         setupValidation();
         setupDatePicker();
+    }
+
+    private void connectDao() {
+        Connection conn = null;
+        try {
+            conn = DatabaseConnection.getConnection();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        userDao = new UserDAO(conn);
     }
 
     private void setComboBoxSelect() {
@@ -128,8 +151,8 @@ public class DialogUserController implements Initializable {
             }
         }
 
-        cmbGender.setValue(Gender.valueOf(user.getGender()));
-        cmbStatus.setValue(Status.valueOf(user.getStatus()));
+        cmbGender.setValue(Gender.fromDisplayName(user.getGender()));
+        cmbStatus.setValue(Status.fromDisplayName(user.getStatus()));
 
 
         hideValidationMessage();
@@ -203,4 +226,35 @@ public class DialogUserController implements Initializable {
         validationMessage.setManaged(false);
     }
 
+    public void onCancelClicked(ActionEvent actionEvent) {
+        dialogStage.close();
+    }
+
+    public void onSaveClicked() throws SQLException {
+        if (!validateInput()) {
+            return;
+        }
+        User user = getUser();
+
+        // TODO: Gọi DAO lưu vào DB nếu cần
+        boolean success = userDao.saveOrUpdate(user);
+
+        if (success) {
+            saved = true;
+            dialogStage.close();
+        } else {
+            showAlert("Lỗi", "Không thể lưu sách vào cơ sở dữ liệu.");
+        }
+
+        saved = true;
+        dialogStage.close();
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 }

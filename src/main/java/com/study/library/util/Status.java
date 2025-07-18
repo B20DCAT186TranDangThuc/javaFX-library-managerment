@@ -14,6 +14,14 @@ public enum Status {
     public String getDisplayName() {
         return displayName;
     }
+    public static Status fromDisplayName(String displayName) {
+        for (Status status : Status.values()) {
+            if (status.displayName.equalsIgnoreCase(displayName.trim())) {
+                return status;
+            }
+        }
+        throw new IllegalArgumentException("Không tìm thấy Gender cho displayName: " + displayName);
+    }
 
     @Override
     public String toString() {

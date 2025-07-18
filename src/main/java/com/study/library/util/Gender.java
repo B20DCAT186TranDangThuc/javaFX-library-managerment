@@ -15,6 +15,15 @@ public enum Gender {
         return displayName;
     }
 
+    public static Gender fromDisplayName(String displayName) {
+        for (Gender gender : Gender.values()) {
+            if (gender.displayName.equalsIgnoreCase(displayName.trim())) {
+                return gender;
+            }
+        }
+        throw new IllegalArgumentException("Không tìm thấy Gender cho displayName: " + displayName);
+    }
+
     @Override
     public String toString() {
         return displayName;

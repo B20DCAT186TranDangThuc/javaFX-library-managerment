@@ -12,6 +12,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
+import lombok.Getter;
+import lombok.Setter;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.net.URL;
@@ -73,7 +75,9 @@ public class BookDialogController implements Initializable {
     private boolean isEditMode = false;
     private Book editingBook;
 
+    @Getter
     private boolean saved = false;
+    @Setter
     private Stage dialogStage;
 
     @Override
@@ -182,14 +186,6 @@ public class BookDialogController implements Initializable {
                 spnAvailableQuantity.getValueFactory().setValue(newVal);
             }
         });
-    }
-
-    public void setDialogStage(Stage dialogStage) {
-        this.dialogStage = dialogStage;
-    }
-
-    public boolean isSaved() {
-        return saved;
     }
 
     @FXML
