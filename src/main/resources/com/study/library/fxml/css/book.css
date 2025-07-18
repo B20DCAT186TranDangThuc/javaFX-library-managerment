@@ -202,7 +202,7 @@
 }
 
 .delete-button {
-    -fx-background-color: #dc3545;
+    -fx-background-color: rgba(220, 53, 69, 0.67);
     -fx-text-fill: white;
     -fx-background-radius: 4px;
     -fx-padding: 6px 8px;
@@ -273,7 +273,7 @@
 }
 
 .edit-button {
-    -fx-background-color: #ffc107;
+    -fx-background-color: rgba(255, 193, 7, 0.7);
     -fx-text-fill: #000000;
     -fx-font-weight: bold;
     -fx-font-size: 12px;
@@ -293,7 +293,7 @@
 }
 
 .delete-button {
-    -fx-background-color: #dc3545;
+    -fx-background-color: rgba(220, 53, 69, 0.55);
     -fx-text-fill: #ffffff;
     -fx-font-weight: bold;
     -fx-font-size: 12px;
