@@ -62,7 +62,7 @@
 
                     <TableView fx:id="tableLoanBooks" styleClass="loan-table" VBox.vgrow="ALWAYS">
                         <columns>
-                            <TableColumn fx:id="colBookId" text="Mã Sách" prefWidth="80" styleClass="center-column"/>
+                            <TableColumn fx:id="colBookId" text="Mã Sách" prefWidth="110" styleClass="center-column"/>
                             <TableColumn fx:id="colBookTitle" text="Tên Sách" prefWidth="250"/>
                             <TableColumn fx:id="colLoanDate" text="Ngày Mượn" prefWidth="100" styleClass="center-column"/>
                             <TableColumn fx:id="colDueDate" text="Hạn Trả" prefWidth="100" styleClass="center-column"/>

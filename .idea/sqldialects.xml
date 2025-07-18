@@ -4,6 +4,7 @@
     <file url="file://$PROJECT_DIR$/init_data/create_library_db.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/study/library/dao/AuthorDAO.java" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/study/library/dao/BookDAO.java" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/study/library/dao/BookLoanDao.java" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/study/library/dao/CategoryDAO.java" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/study/library/dao/UserDAO.java" dialect="GenericSQL" />
   </component>

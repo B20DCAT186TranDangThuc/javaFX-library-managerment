@@ -8,6 +8,9 @@ import com.study.library.database.DatabaseConnection;
 import com.study.library.model.Book;
 import com.study.library.model.BookLoan;
 import com.study.library.model.User;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -109,6 +112,8 @@ public class BookLoanController implements Initializable {
     private BookDAO bookDao;
     private BookLoanDao loanDao;
 
+    private ObservableList<BookLoan> loanList = FXCollections.observableArrayList();
+
     // Constants
     private static final int DEFAULT_LOAN_DAYS = 14;
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -205,10 +210,56 @@ public class BookLoanController implements Initializable {
     }
 
     private void loadBorrowedBooksByUser(int userId) {
+        loanList.clear();
+
         List<BookLoan> borrowedBooks = loanDao.getBorrowedBooksByUserId(userId);
-        // Gán dữ liệu vào table mượn sách
+        lblLoanCount.setText(borrowedBooks.size() + " cuốn");
+        loanList.addAll(borrowedBooks);
+        tableLoanBooks.setItems(loanList);
+
+        setupColumns(); // cấu hình column nếu chưa setup
     }
 
+    private void setupColumns() {
+        colBookId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getBook().getId()).asObject());
+        colBookTitle.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBook().getTitle()));
+        colLoanDate.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBorrowDate()));
+        colDueDate.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getReturnDate()));
+
+        colStatus.setCellValueFactory(cellData -> {
+            boolean returned = cellData.getValue().isReturned();
+            return new SimpleStringProperty(returned ? "Đã trả" : "Đang mượn");
+        });
+
+        colActions.setCellFactory(column -> new TableCell<>() {
+            private final Button returnBtn = new Button("Trả sách");
+
+            {
+                returnBtn.setOnAction(event -> {
+                    BookLoan loan = getTableView().getItems().get(getIndex());
+                    handleReturnBook(loan);
+                });
+                returnBtn.getStyleClass().add("table-return-button");
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(returnBtn);
+                }
+            }
+        });
+
+    }
+
+    private void handleReturnBook(BookLoan loan) {
+        loan.setReturned(true);
+        loanDao.updateReturnStatus(loan.getId(), true);
+        loadBorrowedBooksByUser(loan.getUser().getId());
+    }
     private void showAlert(String title, String message, Alert.AlertType alertType) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);

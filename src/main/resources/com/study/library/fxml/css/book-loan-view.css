@@ -265,7 +265,6 @@
 .loan-table .table-row-cell {
     -fx-border-color: #f1f3f4;
     -fx-border-width: 0 0 1px 0;
-    -fx-padding: 10px 0;
 }
 
 .loan-table .table-row-cell:hover {

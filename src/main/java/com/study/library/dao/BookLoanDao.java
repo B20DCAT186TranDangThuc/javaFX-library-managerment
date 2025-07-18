@@ -63,4 +63,17 @@ public class BookLoanDao {
 
         return loans;
     }
+
+    public void updateReturnStatus(int id, boolean returned) {
+        String sql = "UPDATE book_loans SET returned = ? WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setBoolean(1, returned);
+            stmt.setInt(2, id);
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
