@@ -86,4 +86,33 @@ public class UserDAO {
     }
 
 
+    public List<User> findUserByIdOrName(String searchText) {
+        List<User> users = new ArrayList<>();
+
+        String sql = "SELECT * FROM users WHERE name LIKE ? ";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            String keyword = "%" + searchText.trim() + "%";
+            stmt.setString(1, keyword);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    User user = new User();
+                    user.setId(rs.getInt("id"));
+                    user.setName(rs.getString("name"));
+                    user.setEmail(rs.getString("email"));
+                    user.setPhone(rs.getString("phone"));
+                    user.setDob(rs.getString("dob"));
+                    user.setAddress(rs.getString("address"));
+                    user.setGender(rs.getString("gender"));
+                    user.setStatus(rs.getString("status"));
+                    users.add(user);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // hoặc log bằng Logger
+        }
+
+        return users;
+    }
 }

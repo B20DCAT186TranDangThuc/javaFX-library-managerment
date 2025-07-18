@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.study.library.controller.UserSelectionController"
+            stylesheets="@css/user-selection-dialog.css"
+            prefWidth="600" prefHeight="400" styleClass="dialog-pane">
+
+    <center>
+        <TableView fx:id="tableReaders" prefHeight="400">
+            <columns>
+                <TableColumn fx:id="colId" text="ID" prefWidth="60"/>
+                <TableColumn fx:id="colName" text="Tên độc giả" prefWidth="200"/>
+                <TableColumn fx:id="colEmail" text="Email" prefWidth="200"/>
+                <TableColumn fx:id="colAction" text="Hành động" prefWidth="100"/>
+            </columns>
+        </TableView>
+    </center>
+</BorderPane>

@@ -42,7 +42,7 @@ public class MainController {
 
     @FXML
     private void showLoanReturn() {
-        setContent("/com/study/library/fxml/loan-return-view.fxml");
+        setContent("/com/study/library/fxml/book-loan-view.fxml");
     }
 
     @FXML

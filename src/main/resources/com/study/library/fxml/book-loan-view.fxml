@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.study.library.controller.BookLoanController"
+            stylesheets="@css/book-loan-view.css"
+            styleClass="main-container">
+
+    <!-- HEADER SECTION -->
+    <top>
+        <fx:include source="header-view.fxml" fx:id="headerPane"/>
+    </top>
+
+    <!-- MAIN CONTENT -->
+    <center>
+        <StackPane fx:id="mainContainer">
+            <VBox spacing="20" styleClass="content-container">
+                <padding>
+                    <Insets top="20" right="20" bottom="20" left="20"/>
+                </padding>
+
+                <!-- Section 1: Tìm độc giả -->
+                <VBox spacing="10" styleClass="section-container">
+                    <Label text="Thông tin độc giả" styleClass="section-title"/>
+
+                    <HBox spacing="15" alignment="CENTER_LEFT" styleClass="search-container">
+                        <Label text="Độc giả:" styleClass="field-label"/>
+                        <TextField fx:id="txtReader"
+                                   promptText="Nhập mã hoặc tên độc giả..."
+                                   styleClass="search-field"
+                                   prefWidth="250"/>
+                        <Button fx:id="btnSearchReader"
+                                text="Tìm kiếm"
+                                styleClass="primary-button"
+                                onAction="#onSearchReader">
+                            <graphic>
+                                <FontIcon iconLiteral="fas-search" iconSize="12" iconColor="white"/>
+                            </graphic>
+                        </Button>
+                        <Button fx:id="btnClearReader"
+                                text="Xóa"
+                                styleClass="secondary-button"
+                                onAction="#onClearReader">
+                            <graphic>
+                                <FontIcon iconLiteral="fas-times" iconSize="12" iconColor="#6c757d"/>
+                            </graphic>
+                        </Button>
+                    </HBox>
+                </VBox>
+
+                <!-- Section 2: Danh sách sách đang mượn -->
+                <VBox spacing="10" styleClass="section-container" VBox.vgrow="ALWAYS">
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <Label text="Sách đang mượn" styleClass="section-title"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Label fx:id="lblLoanCount" text="0 cuốn" styleClass="count-label"/>
+                    </HBox>
+
+                    <TableView fx:id="tableLoanBooks" styleClass="loan-table" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="colBookId" text="Mã Sách" prefWidth="80" styleClass="center-column"/>
+                            <TableColumn fx:id="colBookTitle" text="Tên Sách" prefWidth="250"/>
+                            <TableColumn fx:id="colLoanDate" text="Ngày Mượn" prefWidth="100" styleClass="center-column"/>
+                            <TableColumn fx:id="colDueDate" text="Hạn Trả" prefWidth="100" styleClass="center-column"/>
+                            <TableColumn fx:id="colStatus" text="Tình Trạng" prefWidth="100" styleClass="center-column"/>
+                            <TableColumn fx:id="colActions" text="Thao Tác" prefWidth="120" styleClass="center-column"/>
+                        </columns>
+
+                        <placeholder>
+                            <VBox alignment="CENTER" spacing="10" styleClass="empty-placeholder">
+                                <FontIcon iconLiteral="fas-book-open" iconSize="32" iconColor="#ced4da"/>
+                                <Label text="Chưa có sách nào được mượn" styleClass="empty-message"/>
+                                <Label text="Tìm kiếm và thêm sách vào danh sách mượn" styleClass="empty-hint"/>
+                            </VBox>
+                        </placeholder>
+                    </TableView>
+                </VBox>
+
+                <!-- Section 3: Thêm sách mượn -->
+                <VBox spacing="10" styleClass="section-container">
+                    <Label text="Thêm sách mượn" styleClass="section-title"/>
+
+                    <HBox spacing="15" alignment="CENTER_LEFT" styleClass="add-book-container">
+                        <Label text="Tìm sách:" styleClass="field-label"/>
+                        <TextField fx:id="txtSearchBook"
+                                   promptText="Nhập mã hoặc tên sách để tìm kiếm..."
+                                   styleClass="search-field"
+                                   prefWidth="300"/>
+                        <Button fx:id="btnSearchBook"
+                                text="Tìm sách"
+                                styleClass="search-button"
+                                onAction="#onSearchBook">
+                            <graphic>
+                                <FontIcon iconLiteral="fas-search" iconSize="12" iconColor="#28a745"/>
+                            </graphic>
+                        </Button>
+                        <Button fx:id="btnAddBookToLoan"
+                                text="Thêm vào mượn"
+                                styleClass="add-button"
+                                onAction="#onAddBookToLoan"
+                                disable="true">
+                            <graphic>
+                                <FontIcon iconLiteral="fas-plus" iconSize="12" iconColor="white"/>
+                            </graphic>
+                        </Button>
+                    </HBox>
+
+                    <!-- Thông tin sách được chọn -->
+                    <HBox
+                          spacing="20"
+                          styleClass="selected-book-container"
+                          visible="false" managed="false">
+                        <VBox spacing="5">
+                            <Label text="Sách được chọn:" styleClass="info-label"/>
+                            <Label fx:id="lblSelectedBookTitle" styleClass="info-value"/>
+                        </VBox>
+                        <VBox spacing="5">
+                            <Label text="Tác giả:" styleClass="info-label"/>
+                            <Label fx:id="lblSelectedBookAuthor" styleClass="info-value"/>
+                        </VBox>
+                        <VBox spacing="5">
+                            <Label text="Số lượng có sẵn:" styleClass="info-label"/>
+                            <Label fx:id="lblSelectedBookAvailable" styleClass="info-value"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+                <!-- Section 4: Hành động -->
+                <HBox spacing="15" alignment="CENTER_RIGHT" styleClass="action-container">
+                    <Button fx:id="btnSaveLoan"
+                            text="Lưu Phiếu Mượn"
+                            styleClass="save-button"
+                            onAction="#onSaveLoan">
+                        <graphic>
+                            <FontIcon iconLiteral="fas-save" iconSize="12" iconColor="white"/>
+                        </graphic>
+                    </Button>
+
+                    <Button fx:id="btnReturnBooks"
+                            text="Trả Sách"
+                            styleClass="return-button"
+                            onAction="#onReturnBooks">
+                        <graphic>
+                            <FontIcon iconLiteral="fas-undo" iconSize="12" iconColor="white"/>
+                        </graphic>
+                    </Button>
+
+                    <Button fx:id="btnRemoveBookFromLoan"
+                            text="Xóa Khỏi Danh Sách"
+                            styleClass="remove-button"
+                            onAction="#onRemoveBookFromLoan">
+                        <graphic>
+                            <FontIcon iconLiteral="fas-trash" iconSize="12" iconColor="white"/>
+                        </graphic>
+                    </Button>
+
+                    <Button fx:id="btnClearAll"
+                            text="Xóa Tất Cả"
+                            styleClass="clear-button"
+                            onAction="#onClearAll">
+                        <graphic>
+                            <FontIcon iconLiteral="fas-broom" iconSize="12" iconColor="#6c757d"/>
+                        </graphic>
+                    </Button>
+                </HBox>
+            </VBox>
+        </StackPane>
+    </center>
+</BorderPane>

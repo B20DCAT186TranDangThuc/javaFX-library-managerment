@@ -160,4 +160,8 @@ public class BookDAO {
     public Book getBookById(int id) throws SQLException {
         return null;
     }
+
+    public Book findBookByIdOrTitle(String searchText) {
+        return null;
+    }
 }
