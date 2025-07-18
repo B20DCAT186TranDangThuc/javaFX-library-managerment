@@ -42,7 +42,11 @@ create table users
     name       varchar(255)                       not null,
     email      varchar(255)                       null,
     phone      varchar(50)                        null,
-    created_at datetime default CURRENT_TIMESTAMP null
+    created_at datetime default CURRENT_TIMESTAMP null,
+    address    varchar(255)                       null,
+    dob        varchar(255)                       null,
+    gender     varchar(255)                       null,
+    status     varchar(255)                       null
 );
 
 create table book_loans
@@ -84,4 +88,3 @@ BEGIN
         WHERE id = NEW.book_id;
     END IF;
 END;
-

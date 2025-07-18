@@ -10,17 +10,22 @@ import com.study.library.util.Status;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Modality;
 import org.kordamp.ikonli.javafx.FontIcon;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class UserController implements Initializable {
@@ -45,6 +50,8 @@ public class UserController implements Initializable {
     private TableColumn<User, Void> colActions;
     @FXML
     private Label totalUserLabel;
+    @FXML
+    private Button btnAdd;
 
     private UserDAO userDao;
 
@@ -53,7 +60,7 @@ public class UserController implements Initializable {
         connectDao();
         setHeaderPane();
         setComboBoxSelect();
-
+        setupButtonEvents();
         setupTableColumn();
         loadUserData(null);
     }
@@ -78,6 +85,10 @@ public class UserController implements Initializable {
     private void setComboBoxSelect() {
         cmbStatus.getItems().setAll(Status.values());
         cmbGender.getItems().setAll(Gender.values());
+    }
+
+    private void setupButtonEvents() {
+        btnAdd.setOnAction(e -> showUserDialog(null));
     }
 
     private void setupTableColumn() {
@@ -117,7 +128,7 @@ public class UserController implements Initializable {
                 // Xử lý sự kiện
                 editBtn.setOnAction(e -> {
                     User userModel = getTableView().getItems().get(getIndex());
-                    //TODO: edit user
+                    showUserDialog(userModel);
                 });
 
                 deleteBtn.setOnAction(e -> {
@@ -142,6 +153,73 @@ public class UserController implements Initializable {
         totalUserLabel.setText("Total users: " + users.size());
         ObservableList<User> observableBooks = FXCollections.observableArrayList(users);
         tableUser.setItems(observableBooks);
+    }
+
+    private void showUserDialog(User user) {
+        try {
+            // Load FXML
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/study/library/fxml/dialog-user.fxml"));
+            BorderPane dialogContent = loader.load();
+
+            // Get controller
+            DialogUserController controller = loader.getController();
+            controller.setUser(user); // null for create, User object for edit
+
+            // Create custom dialog
+            Dialog<User> dialog = new Dialog<>();
+            dialog.setDialogPane(new DialogPane());
+            dialog.getDialogPane().setContent(dialogContent);
+            dialog.getDialogPane().getButtonTypes().clear(); // Remove default buttons
+
+            dialog.initModality(Modality.APPLICATION_MODAL);
+            dialog.initOwner(tableUser.getScene().getWindow());
+            dialog.setResizable(true);
+
+            // Set dialog title based on mode
+            if (user == null) {
+                dialog.setTitle("Thêm Người Dùng Mới");
+            } else {
+                dialog.setTitle("Chỉnh Sửa Người Dùng");
+            }
+
+
+            // Show dialog
+            dialog.showAndWait();
+
+        } catch (IOException e) {
+            showErrorAlert("Lỗi", "Không thể tải dialog người dùng: " + e.getMessage());
+        }
+    }
+
+    private void showDeleteConfirmation(User user) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Delete");
+        alert.setHeaderText("Delete User");
+        alert.setContentText("Are you sure you want to delete user: " + user.getName() + "?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            deleteUser(user);
+        }
+    }
+
+    private void deleteUser(User user) {
+
+    }
+    private void showSuccessAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private void showErrorAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
 }

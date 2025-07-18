@@ -1,14 +1,165 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.study.library.controller.DialogUserController"
-            prefHeight="400.0" prefWidth="600.0">
+            stylesheets="@css/dialog-user.css"
+            prefWidth="600" prefHeight="650"
+            styleClass="dialog-container">
 
-</AnchorPane>
+    <!-- HEADER -->
+    <top>
+        <VBox styleClass="dialog-header">
+            <HBox alignment="CENTER_LEFT" spacing="15">
+                <padding>
+                    <Insets top="25" right="25" bottom="20" left="25"/>
+                </padding>
+
+                <FontIcon fx:id="headerIcon" iconLiteral="fas-user" iconSize="24" iconColor="#007bff"/>
+                <Label fx:id="headerTitle" text="Thêm Người Dùng Mới" styleClass="dialog-title"/>
+
+                <Region HBox.hgrow="ALWAYS"/>
+            </HBox>
+
+            <Separator styleClass="header-separator"/>
+        </VBox>
+    </top>
+
+    <!-- CONTENT -->
+    <center>
+        <ScrollPane styleClass="content-scroll" fitToWidth="true">
+            <VBox spacing="25" styleClass="form-container">
+                <padding>
+                    <Insets top="25" right="25" bottom="25" left="25"/>
+                </padding>
+
+                <!-- THÔNG TIN CƠ BẢN -->
+                <VBox spacing="15" styleClass="form-section">
+                    <Label text="Thông tin cơ bản" styleClass="section-title"/>
+
+                    <GridPane hgap="20" vgap="15" styleClass="form-grid">
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="30"/>
+                            <ColumnConstraints percentWidth="70"/>
+                        </columnConstraints>
+
+                        <!-- ID (chỉ hiển thị khi edit) -->
+                        <Label text="ID:" styleClass="field-label" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <TextField fx:id="idField" editable="false" styleClass="id-field" visible="false"
+                                   managed="false"
+                                   GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                        <!-- Họ và tên -->
+                        <Label text="Họ và tên:" styleClass="field-label, required" GridPane.columnIndex="0"
+                               GridPane.rowIndex="1"/>
+                        <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <TextField fx:id="nameField" promptText="Nhập họ và tên..." styleClass="input-field"/>
+                            <Label fx:id="lblNameError" styleClass="error-label" visible="false"/>
+                        </VBox>
+
+                        <!-- Email -->
+                        <Label text="Email:" styleClass="field-label" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                        <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                            <TextField fx:id="emailField" promptText="Nhập địa chỉ email..." styleClass="input-field"/>
+                            <Label fx:id="lblEmailError" styleClass="error-label" visible="false"/>
+                        </VBox>
+
+                        <!-- Số điện thoại -->
+                        <Label text="Số điện thoại:" styleClass="field-label" GridPane.columnIndex="0"
+                               GridPane.rowIndex="3"/>
+                        <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                            <TextField fx:id="phoneField" promptText="Nhập số điện thoại..." styleClass="input-field"/>
+                            <Label fx:id="lblPhoneError" styleClass="error-label" visible="false"/>
+                        </VBox>
+
+                        <!-- Ngày sinh -->
+                        <Label text="Ngày sinh:" styleClass="field-label" GridPane.columnIndex="0"
+                               GridPane.rowIndex="4"/>
+                        <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                            <DatePicker fx:id="dobField" promptText="Chọn ngày sinh..." styleClass="date-picker"
+                                        prefWidth="200"/>
+                            <Label fx:id="lblDobError" styleClass="error-label" visible="false"/>
+                        </VBox>
+
+                        <!-- Giới tính -->
+                        <Label text="Giới tính:" styleClass="field-label" GridPane.columnIndex="0"
+                               GridPane.rowIndex="5"/>
+                        <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                            <ComboBox fx:id="cmbGender" promptText="Giới tính" styleClass="filter-combo"
+                                      prefWidth="150"/>
+                        </VBox>
+                    </GridPane>
+                </VBox>
+
+                <!-- THÔNG TIN LIÊN HỆ -->
+                <VBox spacing="15" styleClass="form-section">
+                    <Label text="Thông tin liên hệ" styleClass="section-title"/>
+
+                    <GridPane hgap="20" vgap="15" styleClass="form-grid">
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="30"/>
+                            <ColumnConstraints percentWidth="70"/>
+                        </columnConstraints>
+
+                        <!-- Địa chỉ -->
+                        <Label text="Địa chỉ:" styleClass="field-label" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                            <TextArea fx:id="addressField" promptText="Nhập địa chỉ đầy đủ..."
+                                      styleClass="address-area" prefRowCount="2" wrapText="true"/>
+                        </VBox>
+                    </GridPane>
+                </VBox>
+
+                <!-- THÔNG TIN TRẠNG THÁI -->
+                <VBox spacing="15" styleClass="form-section">
+                    <Label text="Trạng thái tài khoản" styleClass="section-title"/>
+
+                    <GridPane hgap="20" vgap="15" styleClass="form-grid">
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="30"/>
+                            <ColumnConstraints percentWidth="70"/>
+                        </columnConstraints>
+
+                        <!-- Trạng thái -->
+                        <Label text="Trạng thái:" styleClass="field-label, required" GridPane.columnIndex="0"
+                               GridPane.rowIndex="0"/>
+                        <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                            <ComboBox fx:id="cmbStatus" promptText="Trạng thái" styleClass="filter-combo"
+                                      prefWidth="150"/>
+                        </VBox>
+                    </GridPane>
+                </VBox>
+
+                <!-- THÔNG BÁO LỖI CHUNG -->
+                <VBox fx:id="validationContainer" spacing="10" styleClass="validation-section" visible="false"
+                      managed="false">
+                    <Label fx:id="validationMessage" styleClass="error-message" wrapText="true"/>
+                </VBox>
+            </VBox>
+        </ScrollPane>
+    </center>
+
+    <!-- FOOTER BUTTONS -->
+    <bottom>
+        <HBox spacing="15" alignment="CENTER_RIGHT" styleClass="dialog-footer">
+            <padding>
+                <Insets top="20" right="25" bottom="25" left="25"/>
+            </padding>
+
+            <Button fx:id="btnCancel" text="Hủy bỏ" styleClass="cancel-button">
+                <graphic>
+                    <FontIcon iconLiteral="fas-times" iconSize="14" iconColor="#6c757d"/>
+                </graphic>
+            </Button>
+
+            <Button fx:id="btnSave" text="Lưu" styleClass="save-button">
+                <graphic>
+                    <FontIcon iconLiteral="fas-save" iconSize="14" iconColor="white"/>
+                </graphic>
+            </Button>
+        </HBox>
+    </bottom>
+</BorderPane>

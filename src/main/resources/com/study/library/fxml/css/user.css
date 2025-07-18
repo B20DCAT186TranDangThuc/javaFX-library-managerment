@@ -27,7 +27,7 @@
     -fx-text-fill: white;
 }
 
-- /* ===== MAIN CONTAINER ===== */
+/* ===== MAIN CONTAINER ===== */
 .main-container {
     -fx-background-color: #f8f9fa;
     -fx-font-family: "Segoe UI", system-ui, sans-serif;
