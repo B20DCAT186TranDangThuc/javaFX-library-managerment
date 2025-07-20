@@ -7,15 +7,18 @@ import com.study.library.dao.UserDAO;
 import com.study.library.database.DatabaseConnection;
 import com.study.library.model.Book;
 import com.study.library.model.BookLoan;
+import com.study.library.model.SelectableBook;
 import com.study.library.model.User;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
@@ -29,7 +32,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -104,7 +109,7 @@ public class BookLoanController implements Initializable {
 
     // Data
     private User currentReader;
-    private Book selectedBook;
+    private List<SelectableBook> selectableBookList = new ArrayList<>();
     private ObservableList<BookLoan> currentLoans;
 
     // DAOs
@@ -144,25 +149,85 @@ public class BookLoanController implements Initializable {
     }
 
 
-    public void onSearchBook(ActionEvent actionEvent) {
+    public void onSearchBook() {
+        String keyword = txtSearchBook.getText();
+        if (keyword.isEmpty()) {
+            showAlert("Warning", "Vui lòng nhập mã hoặc tên sách.", Alert.AlertType.WARNING);
+            return;
+        }
+
+        List<Book> books = bookDao.findBookByIdOrTitle(keyword);
+        if (books.isEmpty()) {
+            showAlert("Infomation", "Không tìm thấy sách.", Alert.AlertType.INFORMATION);
+        } else {
+            showBookSelectionDialog(books); // nếu nhiều kết quả
+        }
+
     }
 
-    public void onAddBookToLoan(ActionEvent actionEvent) {
+    public void showBookSelectionDialog(List<Book> books) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/study/library/fxml/book-selection-view.fxml"));
+            Parent root = loader.load();
+
+            BookSelectionController controller = loader.getController();
+
+            // Truyền danh sách sách có thể mượn
+            controller.setBookList(books);
+
+            controller.setBookSelectionHandler(selectedBooks -> {
+                selectableBookList.clear();
+                // xử lý danh sách sách được chọn tại đây
+                selectableBookList.addAll(selectedBooks);
+
+                System.out.println(selectableBookList.size());
+                System.out.println(currentReader);
+            });
+
+            Stage stage = new Stage();
+            stage.setTitle("Chọn sách để mượn");
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+
+            // 👉 Sau khi dialog chọn sách đóng, mở cửa sổ xác nhận
+            if (!selectableBookList.isEmpty() && currentReader != null) {
+                showLoanConfirmationDialog(currentReader, selectableBookList);
+            } else {
+                showAlert("Cảnh báo", "Thiếu thông tin độc giả hoặc chưa chọn sách", Alert.AlertType.WARNING);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void onSaveLoan(ActionEvent actionEvent) {
-    }
+    private void showLoanConfirmationDialog(User reader, List<SelectableBook> selectedBooks) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/study/library/fxml/loan-confirmation-view.fxml"));
+            Parent root = loader.load();
 
-    public void onReturnBooks(ActionEvent actionEvent) {
-    }
+            LoanConfirmationController controller = loader.getController();
+            controller.setReader(reader);
+            controller.setBookList(selectedBooks);
 
-    public void onRemoveBookFromLoan(ActionEvent actionEvent) {
-    }
+            // Truyền callback để reload danh sách sách mượn sau khi mượn thành công
+            controller.setOnLoanSuccess(() -> {
+                loadBorrowedBooksByUser(currentReader.getId());
+            });
 
-    public void onClearAll(ActionEvent actionEvent) {
+            Stage stage = new Stage();
+            stage.setTitle("Xác nhận mượn sách");
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void onClearReader(ActionEvent actionEvent) {
+        txtReader.clear();
+        tableLoanBooks.getItems().clear();
     }
 
     public void onSearchReader() {
@@ -198,8 +263,10 @@ public class BookLoanController implements Initializable {
 
             // Nhận kết quả user từ dialog
             controller.setOnUserSelected(selectedUser -> {
+                currentReader = selectedUser;
                 txtReader.setText(selectedUser.getName()); // hoặc gán ID/Email gì đó
                 loadBorrowedBooksByUser(selectedUser.getId());
+                System.out.println(currentReader);
             });
 
             dialogStage.showAndWait();
@@ -260,6 +327,7 @@ public class BookLoanController implements Initializable {
         loanDao.updateReturnStatus(loan.getId(), true);
         loadBorrowedBooksByUser(loan.getUser().getId());
     }
+
     private void showAlert(String title, String message, Alert.AlertType alertType) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);

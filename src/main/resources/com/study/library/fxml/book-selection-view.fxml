@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.study.library.controller.BookSelectionController"
+            prefWidth="700" prefHeight="450"
+            styleClass="dialog-pane">
+
+    <!-- TABLE HIỂN THỊ SÁCH -->
+    <center>
+        <VBox spacing="10">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            <TableView fx:id="tableBooks" prefHeight="370">
+                <columns>
+                    <TableColumn fx:id="colSelect" text="✓" prefWidth="40"/>
+                    <TableColumn fx:id="colBookId" text="Mã sách" prefWidth="100"/>
+                    <TableColumn fx:id="colBookTitle" text="Tên sách" prefWidth="250"/>
+                    <TableColumn fx:id="colAvailable" text="Còn lại" prefWidth="100"/>
+                    <TableColumn fx:id="colReturnDate" text="Ngày trả" prefWidth="120"/>
+                </columns>
+                <placeholder>
+                    <Label text="Không có sách để hiển thị"/>
+                </placeholder>
+            </TableView>
+        </VBox>
+    </center>
+
+    <!-- BUTTON ACTION -->
+    <bottom>
+        <HBox spacing="10" alignment="CENTER_RIGHT">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            <Button text="Hủy" onAction="#onCancel" styleClass="secondary-button"/>
+            <Button text="Xác nhận" onAction="#onConfirm" styleClass="primary-button"/>
+        </HBox>
+    </bottom>
+</BorderPane>

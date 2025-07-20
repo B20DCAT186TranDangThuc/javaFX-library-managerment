@@ -161,7 +161,51 @@ public class BookDAO {
         return null;
     }
 
-    public Book findBookByIdOrTitle(String searchText) {
-        return null;
+    public List<Book> findBookByIdOrTitle(String searchText) {
+        List<Book> books = new ArrayList<>();
+
+        String sql = "SELECT b.*, a.id AS author_id, a.name AS author_name, " +
+                     "c.id AS category_id, c.name AS category_name " +
+                     "FROM books b " +
+                     "LEFT JOIN authors a ON b.author_id = a.id " +
+                     "LEFT JOIN categories c ON b.category_id = c.id " +
+                     "WHERE b.title LIKE ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setString(1, "%" + searchText + "%");
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Author author = new Author(
+                        rs.getInt("author_id"),
+                        rs.getString("author_name")
+                );
+
+                Category category = new Category(
+                        rs.getInt("category_id"),
+                        rs.getString("category_name")
+                );
+
+                Book book = new Book();
+                book.setId(rs.getInt("id"));
+                book.setTitle(rs.getString("title"));
+                book.setAuthor(author);
+                book.setCategory(category);
+                book.setPublisher(rs.getString("publisher"));
+                book.setYearPublished(rs.getInt("year_published"));
+                book.setTotalQuantity(rs.getInt("total_quantity"));
+                book.setAvailableQuantity(rs.getInt("available_quantity"));
+                book.setDescription(rs.getString("description"));
+                book.setLocation(rs.getString("location"));
+
+                books.add(book);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return books;
     }
 }

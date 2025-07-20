@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml" fx:controller="com.study.library.controller.StatisticsController">
+
+    <top>
+        <HBox spacing="10" padding="10">
+            <Label text="Từ:" />
+            <DatePicker fx:id="fromDatePicker" />
+            <Label text="Đến:" />
+            <DatePicker fx:id="toDatePicker" />
+            <Button text="Thống kê" />
+        </HBox>
+    </top>
+
+    <center>
+        <VBox spacing="15" padding="10">
+            <Label text="Biểu đồ số lượt mượn theo tháng"/>
+            <BarChart fx:id="borrowChart" title="Lượt mượn theo tháng"
+                      categoryGap="20" barGap="5">
+                <xAxis>
+                    <CategoryAxis label="Tháng"/>
+                </xAxis>
+                <yAxis>
+                    <NumberAxis label="Lượt mượn"/>
+                </yAxis>
+            </BarChart>
+
+            <Label text="Top 5 sách được mượn nhiều nhất"/>
+            <TableView fx:id="topBooksTable" prefHeight="200">
+                <columns>
+                    <TableColumn fx:id="colTitle" text="Tên sách" prefWidth="300"/>
+                    <TableColumn fx:id="colCount" text="Số lượt mượn" prefWidth="120"/>
+                </columns>
+            </TableView>
+        </VBox>
+    </center>
+
+</BorderPane>

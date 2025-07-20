@@ -2,12 +2,12 @@ package com.study.library.dao;
 
 import com.study.library.model.Book;
 import com.study.library.model.BookLoan;
+import com.study.library.model.SelectableBook;
 import com.study.library.model.User;
+import javafx.collections.ObservableList;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,6 +74,50 @@ public class BookLoanDao {
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public boolean createLoans(User user, List<SelectableBook> items) {
+        String sql = "INSERT INTO book_loans (user_id, book_id, borrow_date, return_date, returned) " +
+                     "VALUES (?, ?, ?, ?, ?)";
+
+        try {
+            connection.setAutoCommit(false); // bắt đầu transaction
+
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                LocalDate today = LocalDate.now();
+
+                for (SelectableBook sb : items) {
+                    if (!sb.isSelected()) continue;
+
+                    stmt.setInt(1, user.getId());
+                    stmt.setInt(2, sb.getBook().getId());
+                    stmt.setDate(3, Date.valueOf(today));
+                    stmt.setDate(4, Date.valueOf(sb.getReturnDate()));
+                    stmt.setBoolean(5, false); // chưa trả
+                    stmt.addBatch();
+                }
+
+                int[] result = stmt.executeBatch();
+                for (int count : result) {
+                    if (count == Statement.EXECUTE_FAILED) {
+                        connection.rollback();
+                        return false;
+                    }
+                }
+
+                connection.commit();
+                return true;
+
+            } catch (SQLException e) {
+                connection.rollback();
+                e.printStackTrace();
+                return false;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 }

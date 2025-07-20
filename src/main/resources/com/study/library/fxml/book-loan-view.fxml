@@ -95,78 +95,50 @@
                                 styleClass="search-button"
                                 onAction="#onSearchBook">
                             <graphic>
-                                <FontIcon iconLiteral="fas-search" iconSize="12" iconColor="#28a745"/>
+                                <FontIcon iconLiteral="fas-search" iconSize="12" iconColor="#000000"/>
                             </graphic>
                         </Button>
-                        <Button fx:id="btnAddBookToLoan"
-                                text="Thêm vào mượn"
-                                styleClass="add-button"
-                                onAction="#onAddBookToLoan"
-                                disable="true">
-                            <graphic>
-                                <FontIcon iconLiteral="fas-plus" iconSize="12" iconColor="white"/>
-                            </graphic>
-                        </Button>
-                    </HBox>
-
-                    <!-- Thông tin sách được chọn -->
-                    <HBox
-                          spacing="20"
-                          styleClass="selected-book-container"
-                          visible="false" managed="false">
-                        <VBox spacing="5">
-                            <Label text="Sách được chọn:" styleClass="info-label"/>
-                            <Label fx:id="lblSelectedBookTitle" styleClass="info-value"/>
-                        </VBox>
-                        <VBox spacing="5">
-                            <Label text="Tác giả:" styleClass="info-label"/>
-                            <Label fx:id="lblSelectedBookAuthor" styleClass="info-value"/>
-                        </VBox>
-                        <VBox spacing="5">
-                            <Label text="Số lượng có sẵn:" styleClass="info-label"/>
-                            <Label fx:id="lblSelectedBookAvailable" styleClass="info-value"/>
-                        </VBox>
                     </HBox>
                 </VBox>
 
-                <!-- Section 4: Hành động -->
-                <HBox spacing="15" alignment="CENTER_RIGHT" styleClass="action-container">
-                    <Button fx:id="btnSaveLoan"
-                            text="Lưu Phiếu Mượn"
-                            styleClass="save-button"
-                            onAction="#onSaveLoan">
-                        <graphic>
-                            <FontIcon iconLiteral="fas-save" iconSize="12" iconColor="white"/>
-                        </graphic>
-                    </Button>
+<!--                &lt;!&ndash; Section 4: Hành động &ndash;&gt;-->
+<!--                <HBox spacing="15" alignment="CENTER_RIGHT" styleClass="action-container">-->
+<!--                    <Button fx:id="btnSaveLoan"-->
+<!--                            text="Lưu Phiếu Mượn"-->
+<!--                            styleClass="save-button"-->
+<!--                            onAction="#onSaveLoan">-->
+<!--                        <graphic>-->
+<!--                            <FontIcon iconLiteral="fas-save" iconSize="12" iconColor="white"/>-->
+<!--                        </graphic>-->
+<!--                    </Button>-->
 
-                    <Button fx:id="btnReturnBooks"
-                            text="Trả Sách"
-                            styleClass="return-button"
-                            onAction="#onReturnBooks">
-                        <graphic>
-                            <FontIcon iconLiteral="fas-undo" iconSize="12" iconColor="white"/>
-                        </graphic>
-                    </Button>
+<!--                    <Button fx:id="btnReturnBooks"-->
+<!--                            text="Trả Sách"-->
+<!--                            styleClass="return-button"-->
+<!--                            onAction="#onReturnBooks">-->
+<!--                        <graphic>-->
+<!--                            <FontIcon iconLiteral="fas-undo" iconSize="12" iconColor="white"/>-->
+<!--                        </graphic>-->
+<!--                    </Button>-->
 
-                    <Button fx:id="btnRemoveBookFromLoan"
-                            text="Xóa Khỏi Danh Sách"
-                            styleClass="remove-button"
-                            onAction="#onRemoveBookFromLoan">
-                        <graphic>
-                            <FontIcon iconLiteral="fas-trash" iconSize="12" iconColor="white"/>
-                        </graphic>
-                    </Button>
+<!--                    <Button fx:id="btnRemoveBookFromLoan"-->
+<!--                            text="Xóa Khỏi Danh Sách"-->
+<!--                            styleClass="remove-button"-->
+<!--                            onAction="#onRemoveBookFromLoan">-->
+<!--                        <graphic>-->
+<!--                            <FontIcon iconLiteral="fas-trash" iconSize="12" iconColor="white"/>-->
+<!--                        </graphic>-->
+<!--                    </Button>-->
 
-                    <Button fx:id="btnClearAll"
-                            text="Xóa Tất Cả"
-                            styleClass="clear-button"
-                            onAction="#onClearAll">
-                        <graphic>
-                            <FontIcon iconLiteral="fas-broom" iconSize="12" iconColor="#6c757d"/>
-                        </graphic>
-                    </Button>
-                </HBox>
+<!--                    <Button fx:id="btnClearAll"-->
+<!--                            text="Xóa Tất Cả"-->
+<!--                            styleClass="clear-button"-->
+<!--                            onAction="#onClearAll">-->
+<!--                        <graphic>-->
+<!--                            <FontIcon iconLiteral="fas-broom" iconSize="12" iconColor="#6c757d"/>-->
+<!--                        </graphic>-->
+<!--                    </Button>-->
+<!--                </HBox>-->
             </VBox>
         </StackPane>
     </center>
