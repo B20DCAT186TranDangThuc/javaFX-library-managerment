@@ -190,10 +190,12 @@ public class BookLoanController implements Initializable {
             stage.showAndWait();
 
             // 👉 Sau khi dialog chọn sách đóng, mở cửa sổ xác nhận
-            if (!selectableBookList.isEmpty() && currentReader != null) {
-                showLoanConfirmationDialog(currentReader, selectableBookList);
-            } else {
-                showAlert("Cảnh báo", "Thiếu thông tin độc giả hoặc chưa chọn sách", Alert.AlertType.WARNING);
+            if (!controller.isCanceled()) {
+                if (!selectableBookList.isEmpty() && currentReader != null) {
+                    showLoanConfirmationDialog(currentReader, selectableBookList);
+                } else {
+                    showAlert("Cảnh báo", "Thiếu thông tin độc giả hoặc chưa chọn sách", Alert.AlertType.WARNING);
+                }
             }
 
         } catch (IOException e) {
@@ -228,6 +230,7 @@ public class BookLoanController implements Initializable {
     public void onClearReader(ActionEvent actionEvent) {
         txtReader.clear();
         tableLoanBooks.getItems().clear();
+        lblLoanCount.setText("0 cuốn");
     }
 
     public void onSearchReader() {

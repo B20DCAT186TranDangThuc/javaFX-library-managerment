@@ -1,0 +1,27 @@
+.root {
+    -fx-background-color: #f4f6f9;
+    -fx-font-family: "Segoe UI", sans-serif;
+}
+
+.filter-bar {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 0 0 1 0;
+    -fx-padding: 10 15 10 15;
+}
+
+.button {
+    -fx-background-color: #2196f3;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.button:hover {
+    -fx-background-color: #1976d2;
+}
+
+.section-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}

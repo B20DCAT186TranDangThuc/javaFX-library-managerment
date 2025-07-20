@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.stage.Stage;
+import lombok.Getter;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -38,6 +39,8 @@ public class BookSelectionController {
     private final ObservableList<SelectableBook> selectableBooks = FXCollections.observableArrayList();
 
     private BookSelectionHandler selectionHandler;
+    @Getter
+    private boolean canceled = true; // mặc định là huỷ
 
     public interface BookSelectionHandler {
         void onBooksSelected(List<SelectableBook> selectedBooks);

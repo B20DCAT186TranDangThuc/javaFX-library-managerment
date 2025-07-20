@@ -1,15 +1,14 @@
 package com.study.library.dao;
 
-import com.study.library.model.Book;
-import com.study.library.model.BookLoan;
-import com.study.library.model.SelectableBook;
-import com.study.library.model.User;
+import com.study.library.model.*;
 import javafx.collections.ObservableList;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BookLoanDao {
     private final Connection connection;
@@ -119,5 +118,87 @@ public class BookLoanDao {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public List<BookStat> getTopBorrowedBooks(LocalDate from, LocalDate to) {
+        List<BookStat> result = new ArrayList<>();
+        String sql = """
+                    SELECT b.title, COUNT(*) AS cnt
+                    FROM book_loans bl
+                    JOIN books b ON bl.book_id = b.id
+                    WHERE bl.borrow_date BETWEEN ? AND ?
+                    GROUP BY b.id
+                    ORDER BY cnt DESC LIMIT 2
+                """;
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setDate(1, Date.valueOf(from));
+            stmt.setDate(2, Date.valueOf(to));
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                result.add(new BookStat(rs.getString("title"), rs.getInt("cnt")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    public Map<String, Integer> countBorrowsByDate(LocalDate from, LocalDate to) {
+        Map<String, Integer> result = new LinkedHashMap<>();
+        String sql = """
+                    SELECT DATE(borrow_date) AS borrow_day, COUNT(*) AS total
+                    FROM book_loans
+                    WHERE borrow_date BETWEEN ? AND ?
+                    GROUP BY borrow_day
+                    ORDER BY borrow_day
+                """;
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setDate(1, Date.valueOf(from));
+            stmt.setDate(2, Date.valueOf(to));
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                String date = rs.getDate("borrow_day").toString(); // YYYY-MM-DD
+                result.put(date, rs.getInt("total"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    public List<UserBorrowStats> getTopBorrowingUsers(LocalDate from, LocalDate to) {
+        List<UserBorrowStats> result = new ArrayList<>();
+        String sql = """
+                    SELECT u.name, COUNT(*) as borrow_count
+                    FROM book_loans bl
+                    JOIN users u ON bl.user_id = u.id
+                    WHERE bl.borrow_date BETWEEN ? AND ?
+                    GROUP BY bl.user_id
+                    ORDER BY borrow_count DESC
+                    LIMIT 2
+                """;
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setDate(1, Date.valueOf(from));
+            stmt.setDate(2, Date.valueOf(to));
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                String name = rs.getString("name");
+                int count = rs.getInt("borrow_count");
+                result.add(new UserBorrowStats(name, count));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 }
