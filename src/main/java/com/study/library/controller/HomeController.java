@@ -59,37 +59,4 @@ public class HomeController implements Initializable {
      */
     private void loadRecentLoans() {
     }
-
-    /**
-     * Thao tác nhanh: Thêm sách mới
-     */
-    @FXML
-    private void addNewBook() {
-
-    }
-
-    /**
-     * Thao tác nhanh: Thêm người mượn mới
-     */
-    @FXML
-    private void addNewBorrower() {
-
-    }
-
-    /**
-     * Thao tác nhanh: Mượn sách
-     */
-    @FXML
-    private void borrowBook() {
-
-    }
-
-    /**
-     * Thao tác nhanh: Xem thống kê
-     */
-    @FXML
-    private void viewStatistics() {
-
-    }
-
 }

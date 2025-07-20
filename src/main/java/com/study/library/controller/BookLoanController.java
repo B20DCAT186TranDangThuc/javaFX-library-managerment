@@ -12,7 +12,6 @@ import com.study.library.model.User;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,7 +23,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -32,10 +30,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class BookLoanController implements Initializable {
@@ -307,7 +305,16 @@ public class BookLoanController implements Initializable {
             {
                 returnBtn.setOnAction(event -> {
                     BookLoan loan = getTableView().getItems().get(getIndex());
-                    handleReturnBook(loan);
+
+                    Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                    confirmAlert.setTitle("Xác nhận trả sách");
+                    confirmAlert.setHeaderText(null);
+                    confirmAlert.setContentText("Bạn có chắc chắn muốn trả sách \"" + loan.getBook().getTitle() + "\" không?");
+
+                    Optional<ButtonType> result = confirmAlert.showAndWait();
+                    if (result.isPresent() && result.get() == ButtonType.OK) {
+                        handleReturnBook(loan);
+                    }
                 });
                 returnBtn.getStyleClass().add("table-return-button");
             }
