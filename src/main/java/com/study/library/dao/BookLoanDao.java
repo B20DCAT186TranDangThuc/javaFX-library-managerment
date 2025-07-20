@@ -201,4 +201,87 @@ public class BookLoanDao {
 
         return result;
     }
+
+    public Long getTotalBorrowingBooks() {
+        String sql = "SELECT COUNT(*) FROM book_loans";
+        try (PreparedStatement stmt = connection.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getLong(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0L;
+    }
+
+    public Long getOverdueBooksCount() {
+        String sql = """
+                    SELECT COUNT(*)
+                    FROM book_loans
+                    WHERE returned = 0
+                      AND DATE_ADD(borrow_date, INTERVAL 14 DAY) < CURRENT_DATE
+                """;
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getLong(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0L;
+    }
+
+    public List<BookLoan> getRecentLoans(int limit) {
+        List<BookLoan> loans = new ArrayList<>();
+
+        String sql = """
+                    SELECT bl.id, bl.borrow_date, bl.return_date, bl.returned,
+                           u.id AS user_id, u.name,
+                           b.id AS book_id, b.title
+                    FROM book_loans bl
+                    JOIN users u ON bl.user_id = u.id
+                    JOIN books b ON bl.book_id = b.id
+                    ORDER BY bl.borrow_date DESC
+                    LIMIT ?
+                """;
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, limit);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                // Tạo user
+                User user = new User();
+                user.setId(rs.getInt("user_id"));
+                user.setName(rs.getString("name"));
+
+                // Tạo book
+                Book book = new Book();
+                book.setId(rs.getInt("book_id"));
+                book.setTitle(rs.getString("title"));
+
+                // Tạo loan
+                BookLoan loan = new BookLoan();
+                loan.setId(rs.getInt("id"));
+                loan.setBorrowDate(rs.getString("borrow_date"));
+                loan.setReturnDate(rs.getString("return_date"));
+                loan.setReturned(rs.getBoolean("returned"));
+                loan.setUser(user);
+                loan.setBook(book);
+
+                loans.add(loan);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return loans;
+    }
 }

@@ -27,7 +27,6 @@ public class BookDAO {
     private boolean insert(Book book) {
         String sql = "INSERT INTO books (title, author_id, category_id, publisher, year_published, total_quantity, available_quantity, description, location) " +
                      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
         try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, book.getTitle());
             stmt.setInt(2, book.getAuthor().getId());
@@ -65,7 +64,6 @@ public class BookDAO {
     private boolean update(Book book) {
         String sql = "UPDATE books SET title=?, author_id=?, category_id=?, publisher=?, year_published=?, total_quantity=?, available_quantity=?, description=?, location=? " +
                      "WHERE id=?";
-
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, book.getTitle());
             stmt.setInt(2, book.getAuthor().getId());
@@ -207,5 +205,44 @@ public class BookDAO {
         }
 
         return books;
+    }
+
+    public Long getTotalBooks() {
+        String sql = "SELECT SUM(total_quantity) FROM books";
+        try (PreparedStatement stmt = connection.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getLong(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0L;
+    }
+
+    public List<Book> getLatestBooks(int limit) {
+        List<Book> latestBooks = new ArrayList<>();
+        String sql = "SELECT * FROM books ORDER BY created_at DESC LIMIT ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setInt(1, limit);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Book book = new Book();
+                book.setId(rs.getInt("id"));
+                book.setTitle(rs.getString("title"));
+                book.setCreateAt(rs.getTimestamp("created_at").toString());
+                // gán thêm các trường nếu cần
+                latestBooks.add(book);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return latestBooks;
     }
 }

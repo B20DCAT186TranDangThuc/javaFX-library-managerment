@@ -20,5 +20,6 @@ public class Book {
     private int availableQuantity;
     private String description;
     private String location;
+    private String createAt;
 
 }

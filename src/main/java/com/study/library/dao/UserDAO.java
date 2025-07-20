@@ -115,4 +115,18 @@ public class UserDAO {
 
         return users;
     }
+
+    public Long getTotalUsers() {
+        String sql = "SELECT COUNT(*) FROM users";
+        try (PreparedStatement stmt = connection.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getLong(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0L;
+    }
 }
