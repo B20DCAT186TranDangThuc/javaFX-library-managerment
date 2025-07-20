@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseConnection {
-    private static final String URL = "jdbc:mysql://localhost:3306/library_db";
+    private static final String URL = "jdbc:p6spy:mysql://localhost:3306/library_db";
     private static final String USERNAME = "root";
     private static final String PASSWORD = "root";
 
@@ -14,7 +14,7 @@ public class DatabaseConnection {
     public static Connection getConnection() throws SQLException {
         if (connection == null || connection.isClosed()) {
             try {
-                Class.forName("com.mysql.cj.jdbc.Driver");
+                Class.forName("com.p6spy.engine.spy.P6SpyDriver");
                 connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
                 System.out.println("Kết nối thành công MySQL!");
             } catch (ClassNotFoundException e) {
