@@ -242,7 +242,6 @@ public class BookController implements Initializable {
                 Optional<ButtonType> result = confirm.showAndWait();
                 if (result.isPresent() && result.get() == ButtonType.OK) {
                     try {
-                        BookDAO bookDAO = new BookDAO(DatabaseConnection.getConnection());
                         boolean success = bookDAO.deleteBook(bookModel.getId());
 
                         if (success) {

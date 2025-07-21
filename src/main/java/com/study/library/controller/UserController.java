@@ -150,7 +150,14 @@ public class UserController implements Initializable {
                     Optional<ButtonType> result = alert.showAndWait();
                     if (result.isPresent() && result.get() == ButtonType.OK) {
                         // TODO: gọi service xoá user ở đây
-                         userDao.deleteById(userModel.getId());
+                         boolean isDeleted = userDao.deleteById(userModel.getId());
+
+                        if (isDeleted) {
+                            loadUserData(null);
+                            showAlert("Thành công", "Đã xoá độc giả khỏi hệ thống.");
+                        } else {
+                            showAlert("Lỗi", "Không thể xoá độc giả. Vui lòng thử lại.");
+                        }
                     }
                 });
             }
@@ -165,6 +172,14 @@ public class UserController implements Initializable {
                 }
             }
         });
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     private void loadUserData(String data) {
