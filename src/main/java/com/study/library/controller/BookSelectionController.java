@@ -134,7 +134,7 @@ public class BookSelectionController {
         if (selectionHandler != null) {
             selectionHandler.onBooksSelected(selected);
         }
-
+        this.canceled = false;
         closeDialog();
     }
 
