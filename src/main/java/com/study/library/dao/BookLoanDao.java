@@ -221,7 +221,7 @@ public class BookLoanDao {
                     SELECT COUNT(*)
                     FROM book_loans
                     WHERE returned = 0
-                      AND DATE_ADD(borrow_date, INTERVAL 14 DAY) < CURRENT_DATE
+                      AND return_date < CURRENT_DATE
                 """;
 
         try (PreparedStatement stmt = connection.prepareStatement(sql);

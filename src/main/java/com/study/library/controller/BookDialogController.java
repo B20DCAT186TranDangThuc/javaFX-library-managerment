@@ -170,6 +170,21 @@ public class BookDialogController implements Initializable {
         spnYear.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1800, 2100, 2020));
         spnTotalQuantity.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, 1));
         spnAvailableQuantity.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000, 1));
+
+        restrictToNumeric(spnYear);
+        restrictToNumeric(spnTotalQuantity);
+        restrictToNumeric(spnAvailableQuantity);
+    }
+
+    private void restrictToNumeric(Spinner<Integer> spinner) {
+        TextFormatter<Integer> formatter = new TextFormatter<>(change -> {
+            String newText = change.getControlNewText();
+            if (newText.matches("\\d*")) {
+                return change; // chỉ chấp nhận số
+            }
+            return null; // từ chối nếu chứa chữ
+        });
+        spinner.getEditor().setTextFormatter(formatter);
     }
 
     private void bindSameAsTotalCheckbox() {

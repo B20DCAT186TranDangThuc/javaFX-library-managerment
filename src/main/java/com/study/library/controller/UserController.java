@@ -141,6 +141,17 @@ public class UserController implements Initializable {
                 deleteBtn.setOnAction(e -> {
                     User userModel = getTableView().getItems().get(getIndex());
                     //TODO: delete user
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Xác nhận xoá");
+                    alert.setHeaderText("Bạn có chắc muốn xoá người dùng này?");
+                    alert.setContentText("Họ tên: " + userModel.getName());
+
+                    // Hiển thị và chờ kết quả
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.isPresent() && result.get() == ButtonType.OK) {
+                        // TODO: gọi service xoá user ở đây
+                         userDao.deleteById(userModel.getId());
+                    }
                 });
             }
 
@@ -196,30 +207,6 @@ public class UserController implements Initializable {
         } catch (IOException e) {
             showErrorAlert("Lỗi", "Không thể tải dialog người dùng: " + e.getMessage());
         }
-    }
-
-    private void showDeleteConfirmation(User user) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirm Delete");
-        alert.setHeaderText("Delete User");
-        alert.setContentText("Are you sure you want to delete user: " + user.getName() + "?");
-
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            deleteUser(user);
-        }
-    }
-
-    private void deleteUser(User user) {
-
-    }
-
-    private void showSuccessAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 
     private void showErrorAlert(String title, String message) {
